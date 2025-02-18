@@ -1,12 +1,23 @@
 # CG 2024/2025
 
-## Group T0xG0y
+## Group T02G03
 
 ## TP 1 Notes
 
-(add your main observations/remarks about your experiments here, in a bulleted list, and remove this line. Some examples below)
+Exercice 2
 
-- In exercise 1 we observed X
-- In exercise 2 we had difficulties in Y
+We observed the small triangle, like we did in exercice 1.
 
-![Screenshot 1](screenshots/cg-t0xgxx-tp1-n.png)
+![Screenshot 1](screenshots/cg-t02g03-tp1-1.png)
+
+We observed the big triangle, it is simillar to the small one.
+
+![Screenshot 2](screenshots/cg-t02g03-tp1-2.png)
+
+We observed all objects created in this TP.
+
+![Screenshot 3](screenshots/cg-t02g03-tp1-3.png)
+
+This parallelogram is double-sided.
+
+![Screenshot 4](screenshots/cg-t02g03-tp1-4.png)
