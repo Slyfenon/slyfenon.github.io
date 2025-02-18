@@ -13,9 +13,9 @@ export class MyTriangleSmall extends CGFobject{
 
   initBuffers(){
     this.vertices = [
-      -1, 0, 1,
-       0, 1, 1,
-       1, 0, 1
+      -1, 0, 0,
+       0, 1, 0,
+       1, 0, 0
     ];
 
     this.indices = [
