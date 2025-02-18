@@ -23,6 +23,17 @@ export class MyInterface extends CGFinterface {
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
 
+        this.gui.add(this.scene, 'displayMyDiamond').name('DisplayDiamond');
+
+        this.gui.add(this.scene, 'displayMyTriangle').name('DisplayTriangle');
+
+        this.gui.add(this.scene, 'displayMyParallelogram').name('DisplayParalleogram');
+
+        this.gui.add(this.scene, 'displayMyTriangleSmall').name('DisplayTriangleSmall');
+
+        this.gui.add(this.scene, 'displayMyTriangleBig').name('DisplayTriangleBig');
+
+
         return true;
     }
 }
