@@ -3,8 +3,8 @@
 ## Group T0xG0y
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Paulo Coutinho   | 202205692 | up202205692@up.pt  |
+| Nuno Machado     | 202206186 | up202206186@up.pt  |
 
 ----
 
