@@ -21,7 +21,9 @@ export class MyParallelogram extends CGFobject{
 
     this.indices = [
       0, 2, 1,
-      0, 3, 2
+      0, 3, 2,
+      0 ,1, 2,
+      0, 2, 3
     ];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
