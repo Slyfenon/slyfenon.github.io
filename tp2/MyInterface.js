@@ -25,6 +25,8 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayMyTangram').name('DisplayTangram');
 
+        this.gui.add(this.scene, 'displayMyUnitCube').name('DisplayUnitCube');
+
         return true;
     }
 }
