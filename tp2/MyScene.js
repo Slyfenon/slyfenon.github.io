@@ -1,9 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyDiamond } from "./MyDiamond.js";
-import { MyParallelogram } from "./MyParallelogram.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyTriangleBig } from "./MyTriangleBig.js";
-import { MyTriangleSmall } from "./MyTriangleSmall.js";
+import { MyTangram } from "./MyTangram.js";
 
 
 /**
@@ -30,23 +26,11 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.parallelogram = new MyParallelogram(this);
-
-    this.triangleSmall1 = new MyTriangleSmall(this);
-    this.triangleSmall2 = new MyTriangleSmall(this);
-
-    this.triangleBig1 = new MyTriangleBig(this);
-    this.triangleBig2 = new MyTriangleBig(this);
+    this.myTangram = new MyTangram(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayMyTriangle = true;
-    this.displayMyTriangleSmall = true;
-    this.displayMyTriangleBig = true;
-    this.displayMyDiamond = true;
-    this.displayMyParallelogram = true;
+    this.displayMyTangram = true;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -107,48 +91,10 @@ export class MyScene extends CGFscene {
 
     this.multMatrix(sca);
     
-    this.pushMatrix();
-    this,this.translate(0.4,-0.4,0)
-    this.translate(1, Math.sqrt(8) + 2, 0);
-    if(this.displayMyDiamond) this.diamond.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(1, 0, 0);
-    this.rotate(Math.PI/2, 0, 0, 1);
-    if (this.displayMyTriangleSmall) this.triangleSmall1.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(0, -1, 0);
-    if (this.displayMyTriangleSmall) this.triangleSmall2.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(-2, -2, 0);
-    this.rotate(Math.PI, 1, 0, 0);
-    this.translate(0, 0, 0);
-    if (this.displayMyParallelogram) this.parallelogram.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(0, -2, 0);
-    this.rotate(Math.PI, 0, 0, 1);
-    if (this.displayMyTriangle) this.triangle.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(-1,-1,0);
-    this.rotate(Math.PI/4, 0, 0, 1);
-    this.translate(2,0,0);
-    if (this.displayMyTriangleBig) this.triangleBig1.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(1, Math.sqrt(8) - 1, 0);
-    if (this.displayMyTriangleBig) this.triangleBig2.display();
-    this.popMatrix();
-
+    if (this.displayMyTangram) {
+      this.myTangram.display();
+    }
+    
     // ---- BEGIN Primitive drawing section
 
 
