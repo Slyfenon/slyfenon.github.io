@@ -5,6 +5,7 @@ import { MyTangram } from "./MyTangram.js";
 import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
+import { MyUnitCube } from "./MyUnitCube.js";
 
 /**
  * MyScene
@@ -16,7 +17,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
@@ -32,7 +33,8 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
 
     this.tangram = new MyTangram(this);
-
+    this.unitCube = new MyUnitCube(this)
+      ;
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayMyTangram = true;
@@ -68,12 +70,12 @@ export class MyScene extends CGFscene {
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
 
- 
+
 
 
     this.loadIdentity();
 
-    
+
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
@@ -106,15 +108,19 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
 
-    let matrixTranslate = [
-      1,0,0,0,
-      0,1,0,0,
-      0,0,1,0,
-      1,1,0,1
-    ];
+
+    this.pushMatrix();
+    this.rotate(-90 * (Math.PI/180) , 1,0,0);
+    this.translate(4,-6,0);
+    if (this.displayMyTangram) this.tangram.display();
+    this.popMatrix();
 
 
-    if(this.displayMyTangram) this.tangram.display();
+    this.pushMatrix();
+    this.translate(5, -0.5, 5);
+    this.scale(10,1,10);
+    this.unitCube.display();
+    this.popMatrix();
 
 
     // ---- END Primitive drawing section
