@@ -5,6 +5,7 @@ import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
 
+
 /**
  * MyScene
  * @constructor
@@ -33,8 +34,11 @@ export class MyScene extends CGFscene {
     this.triangle = new MyTriangle(this);
     this.parallelogram = new MyParallelogram(this);
 
-    this.triangleSmall = new MyTriangleSmall(this);
-    this.triangleBig = new MyTriangleBig(this);
+    this.triangleSmall1 = new MyTriangleSmall(this);
+    this.triangleSmall2 = new MyTriangleSmall(this);
+
+    this.triangleBig1 = new MyTriangleBig(this);
+    this.triangleBig2 = new MyTriangleBig(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -102,28 +106,50 @@ export class MyScene extends CGFscene {
     ];
 
     this.multMatrix(sca);
-
-    var matrixTranslate = [
-      1,0,0,0,
-      0,1,0,0,
-      0,0,1,0,
-      0,0,0,1
-    ];
     
     this.pushMatrix();
-    this.multMatrix(matrixTranslate);
-    this.diamond.display();
+    this,this.translate(0.4,-0.4,0)
+    this.translate(1, Math.sqrt(8) + 2, 0);
+    if(this.displayMyDiamond) this.diamond.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(1, 0, 0);
+    this.rotate(Math.PI/2, 0, 0, 1);
+    if (this.displayMyTriangleSmall) this.triangleSmall1.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(0, -1, 0);
+    if (this.displayMyTriangleSmall) this.triangleSmall2.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(-2, -2, 0);
+    this.rotate(Math.PI, 1, 0, 0);
+    this.translate(0, 0, 0);
+    if (this.displayMyParallelogram) this.parallelogram.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(0, -2, 0);
+    this.rotate(Math.PI, 0, 0, 1);
+    if (this.displayMyTriangle) this.triangle.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(-1,-1,0);
+    this.rotate(Math.PI/4, 0, 0, 1);
+    this.translate(2,0,0);
+    if (this.displayMyTriangleBig) this.triangleBig1.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(1, Math.sqrt(8) - 1, 0);
+    if (this.displayMyTriangleBig) this.triangleBig2.display();
     this.popMatrix();
 
     // ---- BEGIN Primitive drawing section
-
-    if (this.displayMyTriangle) this.triangle.display();
-
-    if (this.displayMyParallelogram) this.parallelogram.display();
-
-    if (this.displayMyTriangleSmall) this.triangleSmall.display();
-
-    if (this.displayMyTriangleBig) this.triangleBig.display();
 
 
     // ---- END Primitive drawing section
