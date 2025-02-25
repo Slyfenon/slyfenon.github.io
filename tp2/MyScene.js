@@ -103,9 +103,19 @@ export class MyScene extends CGFscene {
 
     this.multMatrix(sca);
 
-    // ---- BEGIN Primitive drawing section
+    var matrixTranslate = [
+      1,0,0,0,
+      0,1,0,0,
+      0,0,1,0,
+      0,0,0,1
+    ];
+    
+    this.pushMatrix();
+    this.multMatrix(matrixTranslate);
+    this.diamond.display();
+    this.popMatrix();
 
-    if (this.displayMyDiamond) this.diamond.display();
+    // ---- BEGIN Primitive drawing section
 
     if (this.displayMyTriangle) this.triangle.display();
 
