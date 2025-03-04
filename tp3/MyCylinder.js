@@ -1,11 +1,11 @@
 import {CGFobject} from '../lib/CGF.js';
 
-export class MyPrism extends CGFobject {
+export class MyCylinder extends CGFobject {
     constructor(scene, slices) {
         super(scene);
 
         this.slices = slices;
-        this.stacks = this.stacks
+        this.stacks = 20; // Agora com 20 andares
 
         this.initBuffers();
     }
