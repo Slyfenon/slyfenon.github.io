@@ -38,16 +38,15 @@ export class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
-        this.prism = new MyPrism(this, 8, 1);
+        this.prism = new MyPrism(this, 6, 1);
+        this.prism8 = new MyPrism(this, 8, 20);
+
 
         
-        //this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube, this.prism];
+        this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube, this.prism, this.prism8];
 
         // Labels and ID's for object selection on MyInterface
-        //this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Tangram': 3, 'Unit Cube': 4, 'Prism': 5};
-
-        this.objects = [this.prism];
-        this.objectIDs = { 'Prism': 0};
+        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Tangram': 3, 'Unit Cube': 4, 'Prism': 5, 'Prism 8': 6};
         
         //Other variables connected to MyInterface
         this.selectedObject = 0;
@@ -194,6 +193,8 @@ export class MyScene extends CGFscene {
         else
             this.objects[this.selectedObject].disableNormalViz();
         
+        //this.rotate(Math.PI/2, 1, 0, 0);
+        //this.scale(1, 1, 2);
         this.objects[this.selectedObject].display();
         this.popMatrix();
         // ---- END Primitive drawing section
