@@ -1,15 +1,11 @@
 import {CGFobject} from '../lib/CGF.js';
-/**
- * MyQuad
- * @constructor
- * @param scene - Reference to MyScene object
- */
+
 export class MyPrism extends CGFobject {
-    constructor(scene, slices, stacks) {
+    constructor(scene, slices) {
         super(scene);
 
         this.slices = slices;
-        this.stacks = stacks;
+        this.stacks = 20; // Agora com 20 andares
 
         this.initBuffers();
     }
@@ -20,11 +16,12 @@ export class MyPrism extends CGFobject {
         this.indices = [];
 
         let deltaAngle = (2 * Math.PI) / this.slices;
-
+        let stackHeight = 1 / this.stacks; // Para manter a altura total = 1
 
         for (let i = 0; i < this.stacks; i++) {
-            let z0 = i / this.stacks; 
-            let z1 = (i + 1) / this.stacks; 
+            console.log(i);
+            let z0 = i * stackHeight; 
+            let z1 = (i + 1) * stackHeight; 
 
             for (let j = 0; j < this.slices; j++) {
                 let angle = j * deltaAngle;
@@ -35,6 +32,8 @@ export class MyPrism extends CGFobject {
                 let x1 = Math.cos(nextAngle);
                 let y1 = Math.sin(nextAngle);
 
+                let baseIndex = (i * this.slices + j) * 4;
+
                 this.vertices.push(x0, y0, z0); 
                 this.vertices.push(x1, y1, z0); 
                 this.vertices.push(x0, y0, z1); 
@@ -42,25 +41,18 @@ export class MyPrism extends CGFobject {
 
                 let nx = Math.cos(angle + deltaAngle / 2);
                 let ny = Math.sin(angle + deltaAngle / 2);
-
+                
                 this.normals.push(nx, ny, 0);
                 this.normals.push(nx, ny, 0);
                 this.normals.push(nx, ny, 0);
                 this.normals.push(nx, ny, 0);
 
-                let baseIndex = (i * this.slices + j) * 4;
-
-                this.indices.push(baseIndex, baseIndex + 3, baseIndex + 2); // Triangle 1
-                this.indices.push(baseIndex, baseIndex + 1, baseIndex + 3); // Triangle 2
+                this.indices.push(baseIndex, baseIndex + 3, baseIndex + 2);
+                this.indices.push(baseIndex, baseIndex + 1, baseIndex + 3);
             }
         }
 
-
-        //The defined indices (and corresponding vertices)
-        //will be read in groups of three to draw triangles
         this.primitiveType = this.scene.gl.TRIANGLES;
-
         this.initGLBuffers();
     }
 }
-
