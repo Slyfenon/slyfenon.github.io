@@ -1,11 +1,11 @@
 import {CGFobject} from '../lib/CGF.js';
 
 export class MyCylinder extends CGFobject {
-    constructor(scene, slices) {
+    constructor(scene, slices, stacks) {
         super(scene);
 
         this.slices = slices;
-        this.stacks = 20; // Agora com 20 andares
+        this.stacks = stacks;
 
         this.initBuffers();
     }
@@ -19,7 +19,6 @@ export class MyCylinder extends CGFobject {
         let stackHeight = 1 / this.stacks; // Para manter a altura total = 1
 
         for (let i = 0; i < this.stacks; i++) {
-            console.log(i);
             let z0 = i * stackHeight; 
             let z1 = (i + 1) * stackHeight; 
 
@@ -39,13 +38,15 @@ export class MyCylinder extends CGFobject {
                 this.vertices.push(x0, y0, z1); 
                 this.vertices.push(x1, y1, z1); 
 
-                let nx = Math.cos(angle + deltaAngle / 2);
-                let ny = Math.sin(angle + deltaAngle / 2);
+                let nx0 = Math.cos(angle);
+                let ny0 = Math.sin(angle);
+                let nx1 = Math.cos(nextAngle);
+                let ny1 = Math.sin(nextAngle);
                 
-                this.normals.push(nx, ny, 0);
-                this.normals.push(nx, ny, 0);
-                this.normals.push(nx, ny, 0);
-                this.normals.push(nx, ny, 0);
+                this.normals.push(nx0, ny0, 0);
+                this.normals.push(nx1, ny1, 0);
+                this.normals.push(nx0, ny0, 0);
+                this.normals.push(nx1, ny1, 0);
 
                 this.indices.push(baseIndex, baseIndex + 3, baseIndex + 2);
                 this.indices.push(baseIndex, baseIndex + 1, baseIndex + 3);
