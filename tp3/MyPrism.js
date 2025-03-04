@@ -5,7 +5,7 @@ export class MyPrism extends CGFobject {
         super(scene);
 
         this.slices = slices;
-        this.stacks = this.stacks
+        this.stacks = stacks;
 
         this.initBuffers();
     }
