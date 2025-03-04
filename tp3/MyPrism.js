@@ -1,7 +1,7 @@
 import {CGFobject} from '../lib/CGF.js';
 
 export class MyPrism extends CGFobject {
-    constructor(scene, slices) {
+    constructor(scene, slices, stacks) {
         super(scene);
 
         this.slices = slices;
