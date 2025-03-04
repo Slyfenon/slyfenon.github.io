@@ -1,70 +1,58 @@
 import {CGFobject} from '../lib/CGF.js';
 import { MyQuad } from "./MyQuad.js";
 
-
 /**
- * MyDiamond
+ * MyUnitCubeQuad
  * @constructor
  * @param scene - Reference to MyScene object
  */
 export class MyUnitCubeQuad extends CGFobject {
+    constructor(scene) {
+        super(scene);
+        this.quad = new MyQuad(scene);
+    }
+    
+    display() {
+        // Front face
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, 0.5);
+        this.quad.display();
+        this.scene.popMatrix();
 
-	
+        // Back face
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, -0.5);
+        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.quad.display();
+        this.scene.popMatrix();
 
-	constructor(scene) {
-		super(scene);
-		
-    this.quad = new MyQuad(scene);
+        // Left face
+        this.scene.pushMatrix();
+        this.scene.translate(-0.5, 0, 0);
+        this.scene.rotate(-Math.PI / 2, 0, 1, 0);
+        this.quad.display();
+        this.scene.popMatrix();
 
+        // Right face
+        this.scene.pushMatrix();
+        this.scene.translate(0.5, 0, 0);
+        this.scene.rotate(Math.PI / 2, 0, 1, 0);
+        this.quad.display();
+        this.scene.popMatrix();
 
-	}
-	
-	
+        // Top face
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0.5, 0);
+        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
 
-	display(){
-      // Front face
-      this.scene.pushMatrix();
-      this.scene.translate(0, 0, 0.5);
-      this.quad.display();
-      this.scene.popMatrix();
-
-      this.scene.pushMatrix();
-      this.scene.translate(0, 0, -0.5);
-      this.quad.display();
-      this.scene.popMatrix();
-
-      this.scene.pushMatrix();
-      this.scene.translate(-0.5, 0, 0);
-      this.scene.rotate(-90 * (Math.PI/180) , 0,1,0);
-      this.quad.display();
-      this.scene.popMatrix();
-
-      this.scene.pushMatrix();
-      this.scene.translate(0.5, 0, 0);
-      this.scene.rotate(90 * (Math.PI/180) , 0,1,0);
-      this.quad.display();
-      this.scene.popMatrix();
-
-      this.scene.pushMatrix();
-      this.scene.translate(0, 0.5, 0);
-      this.scene.rotate(-90 * (Math.PI/180) , 1,0,0);
-      this.quad.display();
-      this.scene.popMatrix();
-
-      this.scene.pushMatrix();
-      this.scene.translate(0, -0.5, 0);
-      this.scene.rotate(90 * (Math.PI/180) , 1,0,0);
-      this.quad.display();
-      this.scene.popMatrix();
-
-
-
-
-
-
-
-     
-
-	}
+        // Bottom face
+        this.scene.pushMatrix();
+        this.scene.translate(0, -0.5, 0);
+        this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+    }
 }
 
