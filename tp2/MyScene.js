@@ -1,8 +1,13 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
+import { MyDiamond } from "./MyDiamond.js";
+import { MyParallelogram } from "./MyParallelogram.js";
+import { MyQuad } from "./MyQuad.js";
 import { MyTangram } from "./MyTangram.js";
+import { MyTriangle } from "./MyTriangle.js";
+import { MyTriangleBig } from "./MyTriangleBig.js";
+import { MyTriangleSmall } from "./MyTriangleSmall.js";
 import { MyUnitCube } from "./MyUnitCube.js";
 import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
-
 
 /**
  * MyScene
@@ -14,7 +19,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
@@ -28,15 +33,17 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.myTangram = new MyTangram(this);
-    //this.myUnitCube = new MyUnitCube(this);
-    this.myUnitCubeQuad = new MyUnitCubeQuad(this);
+
+    this.tangram = new MyTangram(this);
+    this.unitCube = new MyUnitCube(this);
+    this.quad = new MyQuad(this);
+    this.unitCubeQuad = new MyUnitCubeQuad(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayMyTangram = true;
-    //this.displayMyUnitCube = true;
-    this.displayMyUnitCubeQuad = true;
+    this.displayUnitCube = true;
+
     this.scaleFactor = 1;
   }
   initLights() {
@@ -67,7 +74,13 @@ export class MyScene extends CGFscene {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
+
+
+
+
     this.loadIdentity();
+
+
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
@@ -96,31 +109,25 @@ export class MyScene extends CGFscene {
     ];
 
     this.multMatrix(sca);
-    
-    this.pushMatrix();
-      this.translate(5, 0, 6);
 
-      this.pushMatrix();
-      this.rotate(-Math.PI/2, 1, 0, 0);
-      this.translate(0,1,0)
-      this.scale(10,10,1);
-      this.translate(0, 0, -0.5); 
-
-      if (this.displayMyUnitCubeQuad) this.myUnitCubeQuad.display();
-
-      this.popMatrix();
-
-      
-      if (this.displayMyTangram) {
-        this.pushMatrix();
-        this.rotate(-Math.PI / 2, 1, 0, 0);
-        this.myTangram.display();
-        this.popMatrix();
-      }
-    
-    this.popMatrix();
-    
     // ---- BEGIN Primitive drawing section
+
+
+
+    this.pushMatrix();
+    this.rotate(-90 * (Math.PI/180) , 1,0,0);
+    this.translate(4,-6,0);
+    if (this.displayMyTangram) this.tangram.display();
+    this.popMatrix();
+
+
+    this.pushMatrix();
+    this.translate(5, -0.5, 5);
+    this.scale(10,1,10);
+    if(this.displayUnitCube) this.unitCube.display();
+    this.popMatrix();
+
+    this.unitCubeQuad.display();
 
 
     // ---- END Primitive drawing section
