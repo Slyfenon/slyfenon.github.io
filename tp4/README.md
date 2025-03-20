@@ -12,4 +12,5 @@ Mapeamos a textura `tangram.png` para todos os objetos presentes no Tangram. A m
 
 ### Part 2
 
-
+Ao aplicarmos inicialmente a textura, verificámos que a imagem apresentava baixa nitidez. Isto deve-se ao facto de as texturas terem, originalmente, dimensões de apenas 16x16 píxeis, sendo, por isso, insuficientes para cobrir toda a área do cubo. Para obter o efeito e a qualidade desejados, aplicámos um tipo de filtro em todas as faces do cubo, ficando a imagem bastante mais nítida.
+![Screenshot 1](screenshots/cg-t02g03-tp4-2.png)
