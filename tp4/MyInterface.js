@@ -21,6 +21,8 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayQuad').name('Display Quad');
         this.gui.add(this.scene, 'displayTangram').name('Display Tangram');
+        this.gui.add(this.scene, 'useNearestFiltering').name('Use Nearest Filtering').onChange(this.scene.updateTextureFiltering.bind(this.scene));
+
 
 
         //Checkbox element in GUI
