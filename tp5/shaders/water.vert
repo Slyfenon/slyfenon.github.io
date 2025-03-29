@@ -14,9 +14,11 @@ uniform float normScale;
 varying vec2 vTextureCoord;
 
 void main() {
-    float height = texture2D(waterMap, aTextureCoord).b; 
+    vec2 displacedCoord = aTextureCoord + vec2(0.01 * timeFactor, 0.0);
 
-    vec4 displacedPosition = vec4(aVertexPosition.x , aVertexPosition.y , aVertexPosition.z + (height*0.1) * timeFactor *0.1 , 1.0);
+    float height = texture2D(waterMap, displacedCoord).b; 
+
+    vec4 displacedPosition = vec4(aVertexPosition.x , aVertexPosition.y , aVertexPosition.z + height * 0.1, 1.0);
 
     gl_Position = uPMatrix * uMVMatrix * displacedPosition;
 
