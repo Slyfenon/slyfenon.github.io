@@ -1,4 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
+import { MyPanorama } from "./MyPanorama.js";
 import { MySphere } from "./MySphere.js";
 import { MyTerrain } from "./MyTerrain.js";
 
@@ -36,15 +37,16 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this, 20, 1);
     this.terrain = new MyTerrain(this);
-    this.sphere = new MySphere(this, 50, 50, 50, false);
+    this.panorama = new MyPanorama(this, this.panoramaTexture);
 
     //Boolean checkers
     this.displayTerrain = true;
-    this.displaySphere = true;
+    this.displayPanorama = true;
   }
 
   initTextures(){
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama.jpg")
   }
 
   initLights() {
@@ -112,12 +114,10 @@ export class MyScene extends CGFscene {
       this.terrain.display();
     }
 
-    if(this.displaySphere){
-      this.pushMatrix();
-      this.translate(0, 2, 0);  // Adjusted to ensure visibility above terrain
-      this.sphere.display();
-      this.popMatrix();
+    if(this.displayPanorama){
+      this.panorama.display();
     }
+    
     this.setActiveShader(this.defaultShader);
 
   }
