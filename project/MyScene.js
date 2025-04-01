@@ -1,5 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
+import { MyWindow } from "./MyWindow.js"; 
+import { MyBuilding } from "./MyBuilding.js";
 
 /**
  * MyScene
@@ -30,6 +32,10 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this, 20, 1);
     this.plane = new MyPlane(this, 64);
+
+    this.window = new MyWindow(this);
+    this.building = new MyBuilding(this, 60, 3, 2, this.window, [0.8, 0.2, 0.2]);
+
   }
   initLights() {
     this.lights[0].setPosition(200, 200, 200, 1);
@@ -90,8 +96,16 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
+    this.pushMatrix();
     this.scale(400, 1, 400);
     this.rotate(-Math.PI / 2, 1, 0, 0);
     this.plane.display();
+    this.popMatrix();
+
+
+    this.pushMatrix();
+    this.translate(-100, 0, -100); // canto frontal esquerdo
+    this.building.display();
+    this.popMatrix();
   }
 }
