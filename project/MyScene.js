@@ -46,7 +46,7 @@ export class MyScene extends CGFscene {
 
   initTextures(){
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
-    this.panoramaTexture = new CGFtexture(this, "./textures/panorama.jpg")
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
   }
 
   initLights() {
@@ -57,7 +57,7 @@ export class MyScene extends CGFscene {
   }
   initCameras() {
     this.camera = new CGFcamera(
-      0.4,
+      70,
       0.1,
       1000,
       vec3.fromValues(200, 200, 200),
