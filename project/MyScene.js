@@ -1,6 +1,8 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
+import { MyPlane } from "./MyPlane.js";
+import { MyWindow } from "./MyWindow.js"; 
+import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
-import { MySphere } from "./MySphere.js";
 import { MyTerrain } from "./MyTerrain.js";
 
 /**
@@ -36,10 +38,14 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this, 20, 1);
+    this.plane = new MyPlane(this, 64);
+
+    this.window = new MyWindow(this);
+    this.building = new MyBuilding(this, 60, 3, 2, this.window, [0.8, 0.2, 0.2]);
+
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
-    //Boolean checkers
     this.displayTerrain = true;
     this.displayPanorama = true;
   }
@@ -108,7 +114,6 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-
     //Plane Display
     if(this.displayTerrain){
       this.terrain.display();
@@ -119,6 +124,11 @@ export class MyScene extends CGFscene {
     }
     
     this.setActiveShader(this.defaultShader);
+
+    this.pushMatrix();
+    this.translate(-100, 0, -100); // 2º quadrante plano xz
+    this.building.display();
+    this.popMatrix();
 
   }
 }
