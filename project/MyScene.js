@@ -1,7 +1,9 @@
-import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
+import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MyWindow } from "./MyWindow.js"; 
 import { MyBuilding } from "./MyBuilding.js";
+import { MyPanorama } from "./MyPanorama.js";
+import { MyTerrain } from "./MyTerrain.js";
 
 /**
  * MyScene
@@ -25,7 +27,12 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+
     this.enableTextures(true);
+    this.initTextures();
+    this.appearance = new CGFappearance(this);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
 
     this.setUpdatePeriod(50);
 
@@ -36,7 +43,18 @@ export class MyScene extends CGFscene {
     this.window = new MyWindow(this);
     this.building = new MyBuilding(this, 60, 3, 2, this.window, [0.8, 0.2, 0.2]);
 
+    this.terrain = new MyTerrain(this);
+    this.panorama = new MyPanorama(this, this.panoramaTexture);
+
+    this.displayTerrain = true;
+    this.displayPanorama = true;
   }
+
+  initTextures(){
+    this.planeTexture = new CGFtexture(this, "./textures/grass.png");
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
+  }
+
   initLights() {
     this.lights[0].setPosition(200, 200, 200, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -45,7 +63,7 @@ export class MyScene extends CGFscene {
   }
   initCameras() {
     this.camera = new CGFcamera(
-      0.4,
+      90,
       0.1,
       1000,
       vec3.fromValues(200, 200, 200),
@@ -96,16 +114,21 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    this.pushMatrix();
-    this.scale(400, 1, 400);
-    this.rotate(-Math.PI / 2, 1, 0, 0);
-    this.plane.display();
-    this.popMatrix();
+    //Plane Display
+    if(this.displayTerrain){
+      this.terrain.display();
+    }
 
+    if(this.displayPanorama){
+      this.panorama.display();
+    }
+    
+    this.setActiveShader(this.defaultShader);
 
     this.pushMatrix();
     this.translate(-100, 0, -100); // 2º quadrante plano xz
     this.building.display();
     this.popMatrix();
+
   }
 }
