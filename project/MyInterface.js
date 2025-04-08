@@ -19,6 +19,8 @@ export class MyInterface extends CGFinterface {
 
         this.initKeys();
 
+        this.gui.add(this.scene, 'displayTerrain').name('Display Terrain');
+
         return true;
     }
 

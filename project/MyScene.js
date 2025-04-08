@@ -1,5 +1,7 @@
-import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyPlane } from "./MyPlane.js";
+import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
+import { MyPanorama } from "./MyPanorama.js";
+import { MySphere } from "./MySphere.js";
+import { MyTerrain } from "./MyTerrain.js";
 
 /**
  * MyScene
@@ -23,14 +25,30 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+
     this.enableTextures(true);
+    this.initTextures();
+    this.appearance = new CGFappearance(this);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
 
     this.setUpdatePeriod(50);
 
     //Initialize scene objects
     this.axis = new CGFaxis(this, 20, 1);
-    this.plane = new MyPlane(this, 64);
+    this.terrain = new MyTerrain(this);
+    this.panorama = new MyPanorama(this, this.panoramaTexture);
+
+    //Boolean checkers
+    this.displayTerrain = true;
+    this.displayPanorama = true;
   }
+
+  initTextures(){
+    this.planeTexture = new CGFtexture(this, "./textures/grass.png");
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
+  }
+
   initLights() {
     this.lights[0].setPosition(200, 200, 200, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -39,7 +57,7 @@ export class MyScene extends CGFscene {
   }
   initCameras() {
     this.camera = new CGFcamera(
-      0.4,
+      70,
       0.1,
       1000,
       vec3.fromValues(200, 200, 200),
@@ -90,8 +108,17 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    this.scale(400, 1, 400);
-    this.rotate(-Math.PI / 2, 1, 0, 0);
-    this.plane.display();
+
+    //Plane Display
+    if(this.displayTerrain){
+      this.terrain.display();
+    }
+
+    if(this.displayPanorama){
+      this.panorama.display();
+    }
+    
+    this.setActiveShader(this.defaultShader);
+
   }
 }
