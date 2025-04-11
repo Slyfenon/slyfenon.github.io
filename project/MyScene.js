@@ -1,5 +1,4 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
-import { MyPlane } from "./MyPlane.js";
 import { MyWindow } from "./MyWindow.js"; 
 import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
@@ -38,16 +37,24 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this, 20, 1);
-    this.plane = new MyPlane(this, 64);
+
+    this.buildingTextureList = {
+      "Bricks": "textures/bricks.png",
+      "Popcorn": "textures/popcorn.png",
+      "Concrete": "textures/concrete.png"
+      };
+
+    this.selectedBuildingTexture = "textures/bricks.png"; // textura inicial
 
     this.window = new MyWindow(this);
-    this.building = new MyBuilding(this, 60, 3, 2, this.window, [0.8, 0.2, 0.2]);
+    this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
 
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
+    this.displayBuilding = true;
   }
 
   initTextures(){
@@ -98,6 +105,11 @@ export class MyScene extends CGFscene {
     this.setSpecular(0.5, 0.5, 0.5, 1.0);
     this.setShininess(10.0);
   }
+
+  updateBuildingTexture() {
+    this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
+  }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -125,10 +137,12 @@ export class MyScene extends CGFscene {
     
     this.setActiveShader(this.defaultShader);
 
-    this.pushMatrix();
-    this.translate(-100, 0, -100); // 2º quadrante plano xz
-    this.building.display();
-    this.popMatrix();
+    if (this.displayBuilding) {
+      this.pushMatrix();
+      this.translate(-100, 0, -100); // 2º quadrante plano xz
+      this.building.display();
+      this.popMatrix();    
+    }
 
   }
 }

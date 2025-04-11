@@ -22,6 +22,11 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayPanorama').name('DisplayPanorama');
         this.gui.add(this.scene, 'displayTerrain').name('DisplayTerrain');
+        this.gui.add(this.scene, 'displayBuilding').name('DisplayBuilding');
+        
+        this.gui.add(this.scene, 'selectedBuildingTexture', this.scene.buildingTextureList)
+        .name('Building Texture')
+        .onChange(() => this.scene.updateBuildingTexture());
 
         return true;
     }

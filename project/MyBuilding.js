@@ -3,15 +3,14 @@ import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 import { MyPlane } from "./MyPlane.js";
 
 export class MyBuilding extends CGFobject {
-  constructor(scene, totalWidth, numFloors, windowsPerFloor, window, color) {
+  constructor(scene, totalWidth, numFloors, windowsPerFloor, window, texturePath) {
     super(scene);
 
     this.totalWidth = totalWidth; // largura total do edifício
     this.numFloors = numFloors; // numero de andares dos blocos laterais
     this.windowsPerFloor = windowsPerFloor;
     this.window = window;
-    this.color = color;
-
+    
     //planos criados para o sign, porta e helipad
     this.helipad = new MyPlane(scene, 1);
     this.door = new MyPlane(scene, 1);
@@ -24,13 +23,13 @@ export class MyBuilding extends CGFobject {
     this.centralHeight = this.centralFloors * this.floorHeight; // altura do bloco central numero de pisos * altura de cada piso
     this.centralDepth = 20; // valor da profundidade
 
-    const bricksTexture = new CGFtexture(scene, "textures/bricks.png");
+    const bricksTexture = new CGFtexture(scene, texturePath);
 
     this.appearance = new CGFappearance(scene);
     this.appearance.setTexture(bricksTexture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     this.appearance.setAmbient(0.6, 0.6, 0.6, 1.0);
-    this.appearance.setDiffuse(this.color[0], this.color[1], this.color[2], 1.0);
+    this.appearance.setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.appearance.setSpecular(0.1, 0.1, 0.1, 1.0);
     this.appearance.setShininess(10.0);
 
@@ -76,9 +75,10 @@ export class MyBuilding extends CGFobject {
     this.scene.popMatrix();
     
 
-    //Dimensao dos blocos laterais com 75% da altura e profundidade do bloco central
-    const sideHeight = this.centralHeight * 0.75;
+    //Dimensao dos blocos laterais com 75% da profundidade do bloco central
     const sideDepth = this.centralDepth * 0.75;
+    // altura dos blocos laterais
+    const sideHeight = this.numFloors * this.floorHeight;
 
     //Bloco esquerdo
     this.scene.pushMatrix();
