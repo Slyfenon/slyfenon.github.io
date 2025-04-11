@@ -53,7 +53,7 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
-    this.tree = new MyTree(this, 15, 'Z', 2, 10, [0.2, 0.6, 0.2]);
+    this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
