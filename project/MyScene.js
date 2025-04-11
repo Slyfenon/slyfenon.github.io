@@ -3,6 +3,7 @@ import { MyWindow } from "./MyWindow.js";
 import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyTree } from "./MyTree.js";
 
 /**
  * MyScene
@@ -51,6 +52,8 @@ export class MyScene extends CGFscene {
 
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
+
+    this.tree = new MyTree(this, 15, 'Z', 2, 10, [0.2, 0.6, 0.2]);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
@@ -143,6 +146,10 @@ export class MyScene extends CGFscene {
       this.building.display();
       this.popMatrix();    
     }
+    this.pushMatrix();
+    this.tree.display();
+    this.popMatrix();    
+
 
   }
 }
