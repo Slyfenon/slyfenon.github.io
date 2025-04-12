@@ -10,23 +10,20 @@ export class MyTree extends CGFobject {
         this.treeHeight = treeHeight;
         this.tiltAngle = tiltAngle;
         this.tiltAxis = tiltAxis;
-        this.trunkHeight = treeHeight * 0.8;  // altura interna do tronco
+        this.trunkHeight = treeHeight * 0.8;
       
-        this.trunk = new MyCone(scene, 20, 1); // raio=1, altura=1 (escalado)
-      
+        this.trunk = new MyCone(scene, 20, 1); 
         this.trunkAppearance = new CGFappearance(scene);
         this.trunkAppearance.setAmbient(0.3, 0.2, 0.1, 1);
         this.trunkAppearance.setDiffuse(0.4, 0.3, 0.2, 1);
         this.trunkAppearance.setSpecular(0.1, 0.1, 0.1, 1);
         this.trunkAppearance.setShininess(5);
 
-        // copa ocupa 80% da árvore
         this.crownHeight = treeHeight * 0.8;
 
         const minLayers = 2;
         const maxLayers = 6;
 
-        // Número de pirâmides com base na altura da copa
         if (treeHeight <= 5) {
           this.numPyramids = 1;
         } else {
@@ -35,16 +32,13 @@ export class MyTree extends CGFobject {
           )));
         }
 
-        // Altura real de cada pirâmide (distribui a copa por igual)
         this.pyramidHeight = Math.max(1.5, this.crownHeight / this.numPyramids);
 
-        // Criação dinâmica das pirâmides
         this.crownLayers = [];
         for (let i = 0; i < this.numPyramids; i++) {
-            this.crownLayers.push(new MyPyramid(scene, 6)); // 6 lados = pirâmide hexagonal
+            this.crownLayers.push(new MyPyramid(scene, 6));
         }
 
-        // Aparência da copa
         this.crownAppearance = new CGFappearance(scene);
         this.crownAppearance.setAmbient(...crownColor, 1);
         this.crownAppearance.setDiffuse(...crownColor, 1);
@@ -55,7 +49,6 @@ export class MyTree extends CGFobject {
       display() {
         this.scene.pushMatrix();
 
-        // Aplicar inclinação com base no eixo
         if (this.tiltAxis.toUpperCase() === 'X') {
           this.scene.rotate(this.tiltAngle * Math.PI / 180, 1, 0, 0);
         } else if (this.tiltAxis.toUpperCase() === 'Z') {
@@ -73,10 +66,10 @@ export class MyTree extends CGFobject {
 
         const baseY = this.trunkHeight * 0.2;
         const baseScale = this.trunkRadius * 2.2;
-        const reductionFactor = 0.80; // fator de redução por camada
+        const reductionFactor = 0.80;
         
         for (let i = 0; i < this.numPyramids; i++) {
-          const y = baseY + i * this.pyramidHeight * 0.6; // sobreposição controlada
+          const y = baseY + i * this.pyramidHeight * 0.6;
           const scaleXZ = baseScale * Math.pow(reductionFactor, i);
         
           this.scene.pushMatrix();
