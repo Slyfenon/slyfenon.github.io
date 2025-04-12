@@ -48,18 +48,22 @@ export class MyScene extends CGFscene {
 
     this.selectedBuildingTexture = "textures/bricks.png"; // textura inicial
 
+    this.season = "Summer";
+
     this.window = new MyWindow(this);
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
 
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
-    this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
+    //this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
     this.forest = new MyForest(this, 4, 5);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
     this.displayBuilding = true;
+    this.displayForest = true;
+
   }
 
   initTextures(){
@@ -115,6 +119,11 @@ export class MyScene extends CGFscene {
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
   }
 
+  updateForestSeason() {
+    const crownTexturePath = this.season === "Fall" ? "textures/yellow_leaves.jpg" : "textures/green_leaves.jpg";
+    this.forest = new MyForest(this, this.forest.rows, this.forest.cols, crownTexturePath);
+  }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -149,10 +158,11 @@ export class MyScene extends CGFscene {
       this.popMatrix();    
     }
     
-    this.pushMatrix();
-    this.forest.display();
-    this.popMatrix();
-  
+    if (this.displayForest) {
+      this.pushMatrix();
+      this.forest.display();
+      this.popMatrix();
+  }
 
 
   }

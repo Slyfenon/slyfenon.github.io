@@ -23,11 +23,16 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayPanorama').name('DisplayPanorama');
         this.gui.add(this.scene, 'displayTerrain').name('DisplayTerrain');
         this.gui.add(this.scene, 'displayBuilding').name('DisplayBuilding');
-        
+        this.gui.add(this.scene, 'displayForest').name('Display Forest');
+
         this.gui.add(this.scene, 'selectedBuildingTexture', this.scene.buildingTextureList)
         .name('Building Texture')
         .onChange(() => this.scene.updateBuildingTexture());
 
+        this.gui.add(this.scene, 'season', ["Summer", "Fall"]).name("Season").onChange(() => {
+            this.scene.updateForestSeason();
+        });
+        
         return true;
     }
 

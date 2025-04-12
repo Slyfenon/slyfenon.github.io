@@ -3,14 +3,15 @@ import { MyCone } from './MyCone.js';
 import { MyPyramid } from './MyPyramid.js';
 
 export class MyTree extends CGFobject {
-    constructor(scene, tiltAngle, tiltAxis, trunkRadius, treeHeight, crownColor) {
-        super(scene);
+  constructor(scene, tiltAngle, tiltAxis, trunkRadius, treeHeight, crownColor, useTexture = true, crownTexturePath = "textures/green_leaves.jpg") {
+      super(scene);
       
         this.trunkRadius = trunkRadius;
         this.treeHeight = treeHeight;
         this.tiltAngle = tiltAngle;
         this.tiltAxis = tiltAxis;
         this.trunkHeight = treeHeight * 0.8;
+        this.useTexture = useTexture;
       
         this.trunk = new MyCone(scene, 20, 1); 
         this.trunkAppearance = new CGFappearance(scene);
@@ -54,7 +55,7 @@ export class MyTree extends CGFobject {
         this.crownAppearance.setShininess(2);
 
         this.crownTextureAppearance = new CGFappearance(scene);
-        this.crownTextureAppearance.setTexture(new CGFtexture(scene, "textures/green_leaves.jpg"));
+        this.crownTextureAppearance.setTexture(new CGFtexture(scene, crownTexturePath));
         this.crownTextureAppearance.setTextureWrap('REPEAT', 'REPEAT');
         this.crownTextureAppearance.setAmbient(1, 1, 1, 1);
         this.crownTextureAppearance.setDiffuse(1, 1, 1, 1);
@@ -71,14 +72,14 @@ export class MyTree extends CGFobject {
           this.scene.rotate(this.tiltAngle * Math.PI / 180, 0, 0, 1);
         }
 
-        this.trunkTextureAppearance.apply();
+        (this.useTexture ? this.trunkTextureAppearance : this.trunkAppearance).apply();
         this.scene.pushMatrix();
         this.scene.scale(this.trunkRadius, this.trunkHeight * 0.85, this.trunkRadius);
         this.trunk.display();
         this.scene.popMatrix();
 
 
-        this.crownTextureAppearance.apply();
+        (this.useTexture ? this.crownTextureAppearance : this.crownAppearance).apply();
 
         const baseY = this.trunkHeight * 0.2;
         const baseScale = this.trunkRadius * 2.2;

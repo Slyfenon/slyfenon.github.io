@@ -2,7 +2,7 @@ import { CGFobject } from '../lib/CGF.js';
 import { MyTree } from './MyTree.js';
 
 export class MyForest extends CGFobject {
-    constructor(scene, rows, cols) {
+    constructor(scene, rows, cols, crownTexturePath = "textures/green_leaves.jpg") {
         super(scene);
 
         this.rows = rows;
@@ -18,16 +18,37 @@ export class MyForest extends CGFobject {
                 const randomTilt = Math.random() * 20;
                 const tiltAxis = Math.random() < 0.5 ? 'X' : 'Z';
 
-                const r = 0.1 + Math.random() * 0.2; 
-                const g = 0.5 + Math.random() * 0.4; 
-                const b = 0.1 + Math.random() * 0.2; 
-                const crownColor = [r, g, b];
+                let crownColor;
+                if (scene.season === "Fall") {
+                    const fallVariants = [
+                        [205 / 255, 133 / 255, 63 / 255],   
+                        [218 / 255, 165 / 255, 32 / 255],   
+                        [184 / 255, 134 / 255, 11 / 255],   
+                        [139 / 255, 69 / 255, 19 / 255],    
+                        [210 / 255, 105 / 255, 30 / 255],   
+                        [255 / 255, 215 / 255, 0 / 255]     
+                    ];
+                    crownColor = fallVariants[Math.floor(Math.random() * fallVariants.length)];
+                } else {
+                    const greenVariants = [
+                        [0 / 255, 100 / 255, 0 / 255],  
+                        [0 / 255, 128 / 255, 0 / 255],     
+                        [34 / 255, 139 / 255, 34 / 255],  
+                        [50 / 255, 205 / 255, 50 / 255],   
+                        [107 / 255, 142 / 255, 35 / 255],  
+                        [85 / 255, 107 / 255, 47 / 255]    
+                    ];
+                    
+                    crownColor = greenVariants[Math.floor(Math.random() * greenVariants.length)];
+                }
 
                 const offsetX = (Math.random() - 0.5) * 10;
                 const offsetZ = (Math.random() - 0.5) * 10; 
 
+                const useTexture = Math.random() < 0.5; 
+
                 this.trees[i][j] = {
-                    tree: new MyTree(scene, randomTilt, tiltAxis, randomRadius, randomHeight, crownColor),
+                    tree: new MyTree(scene, randomTilt, tiltAxis, randomRadius, randomHeight, crownColor, useTexture, crownTexturePath),
                     offsetX: offsetX,
                     offsetZ: offsetZ
                   };
