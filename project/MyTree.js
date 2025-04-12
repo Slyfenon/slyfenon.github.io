@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from '../lib/CGF.js';
+import { CGFobject, CGFappearance, CGFtexture} from '../lib/CGF.js';
 import { MyCone } from './MyCone.js';
 import { MyPyramid } from './MyPyramid.js';
 
@@ -18,6 +18,14 @@ export class MyTree extends CGFobject {
         this.trunkAppearance.setDiffuse(0.4, 0.3, 0.2, 1);
         this.trunkAppearance.setSpecular(0.1, 0.1, 0.1, 1);
         this.trunkAppearance.setShininess(5);
+
+        this.trunkTextureAppearance = new CGFappearance(scene);
+        this.trunkTextureAppearance.setTexture(new CGFtexture(scene, "textures/trunk.jpg"));
+        this.trunkTextureAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        this.trunkTextureAppearance.setAmbient(1, 1, 1, 1);
+        this.trunkTextureAppearance.setDiffuse(1, 1, 1, 1);
+        this.trunkTextureAppearance.setSpecular(0.1, 0.1, 0.1, 1);
+        this.trunkTextureAppearance.setShininess(5);
 
         this.crownHeight = treeHeight * 0.8;
 
@@ -44,6 +52,14 @@ export class MyTree extends CGFobject {
         this.crownAppearance.setDiffuse(...crownColor, 1);
         this.crownAppearance.setSpecular(0.1, 0.1, 0.1, 1);
         this.crownAppearance.setShininess(2);
+
+        this.crownTextureAppearance = new CGFappearance(scene);
+        this.crownTextureAppearance.setTexture(new CGFtexture(scene, "textures/green_leaves.jpg"));
+        this.crownTextureAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        this.crownTextureAppearance.setAmbient(1, 1, 1, 1);
+        this.crownTextureAppearance.setDiffuse(1, 1, 1, 1);
+        this.crownTextureAppearance.setSpecular(0.1, 0.1, 0.1, 1);
+        this.crownTextureAppearance.setShininess(2);
       }
 
       display() {
@@ -55,14 +71,14 @@ export class MyTree extends CGFobject {
           this.scene.rotate(this.tiltAngle * Math.PI / 180, 0, 0, 1);
         }
 
-        this.trunkAppearance.apply();
+        this.trunkTextureAppearance.apply();
         this.scene.pushMatrix();
         this.scene.scale(this.trunkRadius, this.trunkHeight * 0.85, this.trunkRadius);
         this.trunk.display();
         this.scene.popMatrix();
 
 
-        this.crownAppearance.apply();
+        this.crownTextureAppearance.apply();
 
         const baseY = this.trunkHeight * 0.2;
         const baseScale = this.trunkRadius * 2.2;

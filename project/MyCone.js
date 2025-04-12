@@ -52,6 +52,23 @@ export class MyCone extends CGFobject {
             this.indices.push(center, v2, v1); // sentido horário invertido
         }
 
+        this.texCoords = [];
+
+        for (let i = 0; i < this.slices; i++) {
+            this.texCoords.push(i / this.slices, 1);
+        }
+        this.texCoords.push(0.5, 0); 
+
+        this.texCoords.push(0.5, 0.5);
+
+        ang = 0;
+        for (let i = 0; i < this.slices; i++) {
+            const x = Math.cos(ang);
+            const z = -Math.sin(ang);
+            this.texCoords.push(0.5 + x * 0.5, 0.5 + z * 0.5);
+            ang += alphaAng;
+        }
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

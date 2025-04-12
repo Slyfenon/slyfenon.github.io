@@ -83,6 +83,32 @@ export class MyPyramid extends CGFobject {
         this.indices.push(center, v2, v1); // sentido horário invertido
         }
 
+        this.texCoords = [];
+
+        const repeatU = 4;
+        const repeatV = 2;
+
+        for (let i = 0; i < this.slices; i++) {
+            const u0 = i * repeatU / this.slices;
+            const u1 = (i + 1) * repeatU / this.slices;
+            const uMid = (u0 + u1) / 2;
+
+            this.texCoords.push(uMid, 0);
+            this.texCoords.push(u0, repeatV); 
+            this.texCoords.push(u1, repeatV); 
+        }
+
+        this.texCoords.push(0.5, 0.5);
+
+        ang = 0;
+        for (let i = 0; i < this.slices; i++) {
+            const x = Math.cos(ang);
+            const z = -Math.sin(ang);
+            this.texCoords.push(0.5 + x * 0.5, 0.5 + z * 0.5);
+            ang += alphaAng;
+        }
+
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
