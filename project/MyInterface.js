@@ -23,6 +23,10 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayPanorama').name('DisplayPanorama');
         this.gui.add(this.scene, 'displayTerrain').name('DisplayTerrain');
         this.gui.add(this.scene, 'displayBuilding').name('DisplayBuilding');
+
+        this.gui.add(this.scene, 'speedFactor', 0.1, 2.0).name('Speed Factor');
+        this.gui.add(this.scene, 'rotationSpeed', 0.01, 0.2).name('Rotation Speed');
+
         
         this.gui.add(this.scene, 'selectedBuildingTexture', this.scene.buildingTextureList)
         .name('Building Texture')

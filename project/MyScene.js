@@ -1,8 +1,9 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
-import { MyWindow } from "./MyWindow.js"; 
+import { MyWindow } from "./MyWindow.js";
 import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyHelicopter } from "./MyHelicopter.js";
 
 /**
  * MyScene
@@ -42,7 +43,7 @@ export class MyScene extends CGFscene {
       "Bricks": "textures/bricks.png",
       "Popcorn": "textures/popcorn.png",
       "Concrete": "textures/concrete.png"
-      };
+    };
 
     this.selectedBuildingTexture = "textures/bricks.png"; // textura inicial
 
@@ -52,14 +53,29 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
+
+    this.helicopter = new MyHelicopter(this);
+    this.speedFactor = 0.3;
+    this.rotationSpeed = 0.06;
+
+    this.lastUpdateTime = 0;
+
+
     this.displayTerrain = true;
     this.displayPanorama = true;
     this.displayBuilding = true;
   }
 
-  initTextures(){
+  initTextures() {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
+
+    this.bodyAppearance = new CGFappearance(this);
+    this.bodyAppearance.setTexture(null);
+    this.bodyAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+    this.bodyAppearance.setDiffuse(0.6, 0.6, 0.6, 1);
+    this.bodyAppearance.setSpecular(0.1, 0.1, 0.1, 1);
+    this.bodyAppearance.setShininess(10);
   }
 
   initLights() {
@@ -73,31 +89,62 @@ export class MyScene extends CGFscene {
       90,
       0.1,
       1000,
-      vec3.fromValues(200, 200, 200),
+      vec3.fromValues(-10.79, 50.89, 26.54),
       vec3.fromValues(0, 0, 0)
     );
   }
+
+  
   checkKeys() {
-    var text = "Keys pressed: ";
-    var keysPressed = false;
 
-    // Check for key codes e.g. in https://keycode.info/
+
+    let keyPressed = false;
+
     if (this.gui.isKeyPressed("KeyW")) {
-      text += " W ";
-      keysPressed = true;
+      this.helicopter.accelerate(5 * this.speedFactor);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyS")) {
+      this.helicopter.accelerate(-5 * this.speedFactor);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyA")) {
+      this.helicopter.turn(this.rotationSpeed);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      this.helicopter.turn(-this.rotationSpeed);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyR")) {
+      this.helicopter.reset();
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyP")) {
+      this.helicopter.ascend();
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyL")) {
+      this.helicopter.descend();
+      keyPressed = true;
     }
 
-    if (this.gui.isKeyPressed("KeyS")) {
-      text += " S ";
-      keysPressed = true;
+    if (!keyPressed) {
+      this.helicopter.accelerate(-5 * this.speedFactor);
     }
-    if (keysPressed)
-      console.log(text);
   }
+  
 
   update(t) {
+    const deltaTime = t - this.lastUpdateTime;
+    this.lastUpdateTime = t;
+
     this.checkKeys();
+    this.helicopter.update(deltaTime);
+    //Adjusting camera position
+    //console.log("Camera position:", this.camera.position);
   }
+
 
   setDefaultAppearance() {
     this.setAmbient(0.5, 0.5, 0.5, 1.0);
@@ -127,21 +174,24 @@ export class MyScene extends CGFscene {
     this.setDefaultAppearance();
 
     //Plane Display
-    if(this.displayTerrain){
+    if (this.displayTerrain) {
       this.terrain.display();
     }
 
-    if(this.displayPanorama){
+    if (this.displayPanorama) {
       this.panorama.display();
     }
-    
+
+    this.bodyAppearance.apply();
+    this.helicopter.display();
+
     this.setActiveShader(this.defaultShader);
 
     if (this.displayBuilding) {
       this.pushMatrix();
       this.translate(-100, 0, -100); // 2º quadrante plano xz
       this.building.display();
-      this.popMatrix();    
+      this.popMatrix();
     }
 
   }
