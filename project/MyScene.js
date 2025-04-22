@@ -47,10 +47,19 @@ export class MyScene extends CGFscene {
 
     this.selectedBuildingTexture = "textures/bricks.png"; // textura inicial
 
+
+    this.terrainTextureList = {
+      "Grass": "textures/grass.png",
+      "Terrain 1": "textures/terrain1.png"
+    };
+
+    this.selectedTerrainTexture = this.terrainTextureList["Grass"];
+
+
     this.window = new MyWindow(this);
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
 
-    this.terrain = new MyTerrain(this);
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
 
@@ -68,7 +77,8 @@ export class MyScene extends CGFscene {
 
   initTextures() {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
-    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
+
 
     this.bodyAppearance = new CGFappearance(this);
     this.bodyAppearance.setTexture(null);
@@ -88,8 +98,8 @@ export class MyScene extends CGFscene {
     this.camera = new CGFcamera(
       90,
       0.1,
-      1000,
-      vec3.fromValues(-10.79, 50.89, 26.54),
+      2000,
+      vec3.fromValues(-100, 50.89, -100),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -129,6 +139,11 @@ export class MyScene extends CGFscene {
       keyPressed = true;
     }
 
+    if(this.gui.isKeyPressed("KeyC")){
+      this.camera.setPosition(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y + 40, this.helicopter.position.z + 40));
+      this.camera.setTarget(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y, this.helicopter.position.z)); 
+    }
+
     if (!keyPressed) {
       this.helicopter.accelerate(-5 * this.speedFactor);
     }
@@ -155,6 +170,10 @@ export class MyScene extends CGFscene {
 
   updateBuildingTexture() {
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
+  }
+
+  updateTerrainTexture(){
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture);
   }
 
   display() {

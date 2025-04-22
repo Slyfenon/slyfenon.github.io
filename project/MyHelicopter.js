@@ -8,15 +8,14 @@ export class MyHelicopter extends CGFobject {
     super(scene);
 
     //Initial Parameters
-    this.position = { x: 0, y: 0, z: 0 };
+    this.position = { x: -100, y: 22.25, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0; // ângulo em radianos
     this.speed = 0;
     this.tilt = 0;
     this.state = 'landed'; // landed, taking_off, flying, descending
-    this.cruiseAltitude = 25;
+    this.cruiseAltitude = 50;
     this.maxSpeed = 60; 
-
 
 
     this.cylinder = new MyCylinder(scene, 30, 20, 1, 2);
@@ -81,13 +80,22 @@ export class MyHelicopter extends CGFobject {
   }
 
   update(deltaTime) {
+
+    //console.log(`Position: x=${this.position.x}, y=${this.position.y}, z=${this.position.z}`);
+    //console.log(`Velocity: x=${this.velocity.x}, y=${this.velocity.y}, z=${this.velocity.z}`);
+    //console.log(`Orientation: ${this.orientation}`);
+    //console.log(`Speed: ${this.speed}`);
+    //console.log(`Tilt: ${this.tilt}`);
+    //console.log(`State: ${this.state}`);
+
+
     const dt = deltaTime / 1000;
   
     this.position.x += this.velocity.x * dt;
     this.position.z += this.velocity.z * dt;
   
     if (this.state === 'taking_off') {
-      this.position.y += 6 * dt;
+      this.position.y += 8 * dt;
       if (this.position.y >= this.cruiseAltitude) {
         this.position.y = this.cruiseAltitude;
         this.state = 'flying';
@@ -95,7 +103,7 @@ export class MyHelicopter extends CGFobject {
     }
   
     if (this.state === 'descending') {
-      this.position.y -= 6 * dt;
+      this.position.y -= 8 * dt;
       if (this.position.y <= 0) {
         this.position.y = 0;
         this.velocity = { x: 0, y: 0, z: 0 };
@@ -108,7 +116,6 @@ export class MyHelicopter extends CGFobject {
 
   turn(v) {
     this.orientation += v;
-    const dir = Math.atan2(this.velocity.x, this.velocity.z);
     const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.z ** 2);
     this.velocity.x = speed * Math.sin(this.orientation);
     this.velocity.z = speed * Math.cos(this.orientation);
@@ -123,14 +130,11 @@ export class MyHelicopter extends CGFobject {
       this.velocity.z = this.speed * Math.cos(this.orientation);
       this.tilt = 0.1 * v; 
 
-      if(v < 0 && this.speed != 0){
-        this.tilt = -0.1 * v; 
-      }
     }
   }
   
   reset() {
-    this.position = { x: 0, y: 0, z: 0 };
+    this.position = { x: -100, y: 22.25, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0;
     this.speed = 0;
@@ -145,9 +149,11 @@ export class MyHelicopter extends CGFobject {
   
   descend() {
     if (this.state === 'flying') {
+      this.speed = 0;
+      this.velocity = { x: 0, y: 0, z: 0 };
+      this.tilt = -0.1;
       this.state = 'descending';
     }
   }
-  
   
 }

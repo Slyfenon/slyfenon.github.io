@@ -11,11 +11,11 @@ import { MyPlane } from './MyPlane.js';
  * @param maxT - maximum texture coordinate in T
 */
 export class MyTerrain extends CGFobject {
-	constructor(scene) {
+	constructor(scene, texturePath) {
 		super(scene);
 		this.plane = new MyPlane(this.scene, 64);
     this.planeMaterial = new CGFappearance(this.scene);
-    this.planeTexture = new CGFtexture(this.scene, "./textures/grass.png");
+    this.planeTexture = new CGFtexture(this.scene, texturePath);
     this.planeMaterial.setTexture(this.planeTexture);
     this.terrainShader = new CGFshader(this.scene.gl, "./shaders/plane.vert", "./shaders/plane.frag");
 

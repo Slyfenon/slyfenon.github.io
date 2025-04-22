@@ -32,6 +32,11 @@ export class MyInterface extends CGFinterface {
         .name('Building Texture')
         .onChange(() => this.scene.updateBuildingTexture());
 
+
+        this.gui.add(this.scene, 'selectedTerrainTexture', this.scene.terrainTextureList)
+        .name('Terrain Texture')
+        .onChange(() => this.scene.updateTerrainTexture());
+
         return true;
     }
 
