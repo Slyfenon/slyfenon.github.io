@@ -17,29 +17,13 @@ export class MyForest extends CGFobject {
                 const randomRadius = 0.8 + Math.random() * (2.0 - 0.8);
                 const randomTilt = Math.random() * 20;
                 const tiltAxis = Math.random() < 0.5 ? 'X' : 'Z';
-
                 let crownColor;
+
                 if (scene.season === "Fall") {
-                    const fallVariants = [
-                        [205 / 255, 133 / 255, 63 / 255],   
-                        [218 / 255, 165 / 255, 32 / 255],   
-                        [184 / 255, 134 / 255, 11 / 255],   
-                        [139 / 255, 69 / 255, 19 / 255],    
-                        [210 / 255, 105 / 255, 30 / 255],   
-                        [255 / 255, 215 / 255, 0 / 255]     
-                    ];
-                    crownColor = fallVariants[Math.floor(Math.random() * fallVariants.length)];
-                } else {
-                    const greenVariants = [
-                        [0 / 255, 100 / 255, 0 / 255],  
-                        [0 / 255, 128 / 255, 0 / 255],     
-                        [34 / 255, 139 / 255, 34 / 255],  
-                        [50 / 255, 205 / 255, 50 / 255],   
-                        [107 / 255, 142 / 255, 35 / 255],  
-                        [85 / 255, 107 / 255, 47 / 255]    
-                    ];
-                    
-                    crownColor = greenVariants[Math.floor(Math.random() * greenVariants.length)];
+
+                    crownColor = [0.6 + Math.random() * 0.4, 0.3 + Math.random() * 0.4, Math.random() * 0.2] ;
+                } else {                   
+                    crownColor = [Math.random() * 0.3, 0.4 + Math.random() * 0.5, Math.random() * 0.3];
                 }
 
                 const offsetX = (Math.random() - 0.5) * 10;
