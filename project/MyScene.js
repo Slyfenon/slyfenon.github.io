@@ -3,8 +3,8 @@ import { MyWindow } from "./MyWindow.js";
 import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
-import { MyTree } from "./MyTree.js";
 import { MyForest } from './MyForest.js';
+import { MyFire } from './MyFire.js';
 
 /**
  * MyScene
@@ -58,6 +58,8 @@ export class MyScene extends CGFscene {
 
     //this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
     this.forest = new MyForest(this, 4, 5);
+
+    this.fire = new MyFire(this);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
@@ -164,6 +166,11 @@ export class MyScene extends CGFscene {
       this.popMatrix();
   }
 
+      // Fire
+      this.pushMatrix();
+      this.translate(20, 0, 20); // posição do fogo
+      this.fire.display();
+      this.popMatrix();
 
   }
 }
