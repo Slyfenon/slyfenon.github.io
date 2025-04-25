@@ -20,23 +20,21 @@ export class MyFire extends CGFobject {
     this.maxHeight = 7;
     this.minHeight = 1;
 
-    const densityBase = 2; // número de pirâmides por unidade de área
+    const densityBase = 1; 
     const flameCount = Math.floor(Math.PI * fireRadius * fireRadius * densityBase);
 
     for (let i = 0; i < flameCount; i++) {
       const pyramid = new MyPyramid(scene, 6);
       this.flames.push(pyramid);
 
-      // Gera posição aleatória dentro do círculo
       const angle = Math.random() * 2 * Math.PI;
-      const radius = Math.sqrt(Math.random()) * fireRadius; // distribuição mais densa no centro
+      const radius = Math.sqrt(Math.random()) * fireRadius; 
       const x = radius * Math.cos(angle);
       const z = radius * Math.sin(angle);
 
-      // Altura depende da distância ao centro, com leve aleatoriedade
-      const t = radius / fireRadius; // [0, 1]
+      const t = radius / fireRadius;
       const baseHeight = this.maxHeight - t * (this.maxHeight - this.minHeight);
-      const randomFactor = 0.8 + Math.random() * 0.4; // entre 0.8 e 1.2
+      const randomFactor = 0.8 + Math.random() * 0.4;
       const height = baseHeight * randomFactor;
 
       this.positions.push({ x, z, height });
