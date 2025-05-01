@@ -1,13 +1,16 @@
-import { CGFobject, CGFappearance, CGFtexture } from "../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFtexture, CGFshader } from "../lib/CGF.js";
 import { MyPyramid } from "./MyPyramid.js";
 
 export class MyFire extends CGFobject {
-  constructor(scene, fireRadius = 10) {
+  constructor(scene, fireRadius = 6) {
     super(scene);
-
+    this.shader = new CGFshader(scene.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag");
+    this.shader.setUniformsValues({ uSampler2: 1, timeFactor: 0 });
+    
     this.flames = [];
     this.positions = [];
     this.appearance = new CGFappearance(scene);
+
 
     const texture = new CGFtexture(scene, "textures/fogo.jpg");
     this.appearance.setTexture(texture);
@@ -20,11 +23,14 @@ export class MyFire extends CGFobject {
     this.maxHeight = 7;
     this.minHeight = 1;
 
-    const densityBase = 1; 
+    const densityBase =1; 
     const flameCount = Math.floor(Math.PI * fireRadius * fireRadius * densityBase);
+    this.offsets = [];
+
 
     for (let i = 0; i < flameCount; i++) {
-      const pyramid = new MyPyramid(scene, 6);
+      this.offsets.push(Math.random() * 10.0);
+      const pyramid = new MyPyramid(scene,5);
       this.flames.push(pyramid);
 
       const angle = Math.random() * 2 * Math.PI;
@@ -42,16 +48,29 @@ export class MyFire extends CGFobject {
   }
 
   display() {
-    this.appearance.apply();
+    this.scene.setActiveShader(this.shader);
+
+    this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
+    this.appearance.texture.bind();
+
+    this.shader.setUniformsValues({
+        uSampler: 0,                                 
+        timeFactor: this.scene.timeFactor || 0
+    });
 
     for (let i = 0; i < this.flames.length; i++) {
       const { x, z, height } = this.positions[i];
+      this.shader.setUniformsValues({ flameOffset: this.offsets[i] });
 
+      this.appearance.apply();
       this.scene.pushMatrix();
       this.scene.translate(x, 0, z);
-      this.scene.scale(0.8, height, 0.8);
+      this.scene.scale(1.2, height * 1.3, 1.2);
       this.flames[i].display();
       this.scene.popMatrix();
     }
-  }
+
+    this.scene.setActiveShader(this.scene.defaultShader);
+}
+
 }
