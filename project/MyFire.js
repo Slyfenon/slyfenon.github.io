@@ -13,6 +13,7 @@ export class MyFire extends CGFobject {
 
 
     const texture = new CGFtexture(scene, "textures/fogo.jpg");
+    this.filterTexture = new CGFtexture(scene, "textures/filter.png");
     this.appearance.setTexture(texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     this.appearance.setAmbient(1.0, 1.0, 1.0, 1.0);
@@ -53,6 +54,9 @@ export class MyFire extends CGFobject {
     this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
     this.appearance.texture.bind();
 
+    this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
+    this.filterTexture.bind();
+
     this.shader.setUniformsValues({
         uSampler: 0,                                 
         timeFactor: this.scene.timeFactor || 0
@@ -60,6 +64,7 @@ export class MyFire extends CGFobject {
 
     for (let i = 0; i < this.flames.length; i++) {
       const { x, z, height } = this.positions[i];
+
       this.shader.setUniformsValues({ flameOffset: this.offsets[i] });
 
       this.appearance.apply();
