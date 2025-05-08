@@ -16,7 +16,7 @@ void main() {
 	if (filter.b > 0.5)
 		//laranja brilhante - vec4(1.0, 0.5, 0.0, 1.0)
 		//amarelo quento - vec4(1.0, 0.85, 0.2, 1.0)
-		color=vec4(1.0, 0.5, 0.0, 1.0);
+		color=vec4(1.0, 0.85, 0.2, 1.0);
 	
 	gl_FragColor = color;
 }

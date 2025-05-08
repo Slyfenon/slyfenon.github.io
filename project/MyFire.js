@@ -21,7 +21,7 @@ export class MyFire extends CGFobject {
     this.appearance.setSpecular(0.0, 0.0, 0.0, 1.0);
     this.appearance.setShininess(1.0);
 
-    this.maxHeight = 7;
+    this.maxHeight = 4;
     this.minHeight = 1;
 
     const densityBase =1; 
