@@ -16,42 +16,38 @@ export class MyCylinder extends CGFobject {
     this.indices = [];
     this.normals = [];
     this.texCoords = [];
-
+  
     const angleStep = (2 * Math.PI) / this.slices;
     
     for (let stack = 0; stack <= this.stacks; stack++) {
       const z = (stack / this.stacks) * this.height; 
-
+  
       for (let slice = 0; slice <= this.slices; slice++) {
-        const angle = slice * angleStep;
-        const x = Math.cos(angle) * this.radius;  
-        const y = Math.sin(angle) * this.radius;  
-
-        this.vertices.push(x, y, z);
-
-        if (z === 0) {
-          this.normals.push(0, 0, -1);  
-        } else if (z === this.height) {
-          this.normals.push(0, 0, 1);   
-        } else {
-          this.normals.push(x, y, 0);   
-        }
-
-        this.texCoords.push(slice / this.slices, stack / this.stacks);
+      const angle = slice * angleStep;
+      const x = Math.cos(angle) * this.radius;  
+      const y = Math.sin(angle) * this.radius;  
+  
+      this.vertices.push(x, y, z);
+  
+      this.normals.push(x, y, 0);
+  
+      this.texCoords.push(slice / this.slices, stack / this.stacks);
       }
     }
-
+  
     for (let stack = 0; stack < this.stacks; stack++) {
       for (let slice = 0; slice < this.slices; slice++) {
-        const first = stack * (this.slices + 1) + slice;
-        const second = first + this.slices + 1;
-
-        this.indices.push(first, second, first + 1);    
-        this.indices.push(second, second + 1, first + 1);
+      const first = stack * (this.slices + 1) + slice;
+      const second = first + this.slices + 1;
+  
+      this.indices.push(first, first + 1, second);    
+      this.indices.push(second, first + 1, second + 1);
+      
       }
     }
-
+  
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
   }
+  
 }

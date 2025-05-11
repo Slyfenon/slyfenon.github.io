@@ -1,14 +1,15 @@
 import {CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MyUnitCube } from '../tp3/MyUnitCube.js';
+import { MyBucket } from './MyBucket.js';
 import { MyCylinder } from "./MyCylinder.js";
 import { MySphere } from './MySphere.js';
 
 export class MyHelicopter extends CGFobject {
-  constructor(scene) {
+  constructor(scene, texture, buildingHeigth) {
     super(scene);
 
     //Initial Parameters
-    this.position = { x: -100, y: 22.25, z: -106 };
+    this.position = { x: -100, y: buildingHeigth + 4.5, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0; // ângulo em radianos
     this.speed = 0;
@@ -16,6 +17,7 @@ export class MyHelicopter extends CGFobject {
     this.state = 'landed'; // landed, taking_off, flying, descending
     this.cruiseAltitude = 50;
     this.maxSpeed = 60; 
+    this.bucketRelease = false;
 
 
     this.cylinder = new MyCylinder(scene, 30, 20, 1, 2);
@@ -23,6 +25,14 @@ export class MyHelicopter extends CGFobject {
     this.sphere = new MySphere(scene, 20, 20, true, 1);
     this.skids1 = new MyUnitCube(scene);
     this.skids2 = new MyUnitCube(scene);
+    this.bucket = new MyBucket(scene);
+
+    this.topRotor = new MyUnitCube(scene); 
+    this.topRotorAngle = 0;
+
+
+    this.helicopterMaterial = new CGFappearance(this.scene);
+    this.helicopterMaterial.setTexture(texture);
 
     this.initBuffers();
   }
@@ -41,6 +51,15 @@ export class MyHelicopter extends CGFobject {
     this.scene.pushMatrix();
     this.scene.scale(5, 5, 5);
     this.scene.translate(0, 2, 0);
+    this.helicopterMaterial.apply();
+    this.cylinder.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.scale(2, 2, 2);
+    this.scene.translate(0, 8.25, 3);
+    this.scene.rotate(Math.PI / 2, 1, 0, 0);
+    this.helicopterMaterial.apply();
     this.cylinder.display();
     this.scene.popMatrix();
 
@@ -75,6 +94,33 @@ export class MyHelicopter extends CGFobject {
     this.scene.popMatrix();
 
 
+    // Top Rotor
+    this.scene.pushMatrix();
+    this.scene.translate(0, 16.75, 5); // position on top of the helicopter
+    this.scene.rotate(this.topRotorAngle, 0, 1, 0); // spinning
+    this.scene.scale(18, 0.3, 0.8); // further increased size: longer, thicker blade
+    this.topRotor.display();
+    this.scene.popMatrix();
+
+
+    // BUCKET AND ROPE
+    if (this.bucketRelease) {
+      // Rope
+      this.scene.pushMatrix();
+      this.scene.translate(0, -2.5, 5);
+      this.scene.scale(0.1, 5, 0.1);
+      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+      this.cylinder.display();
+      this.scene.popMatrix();
+
+      // Bucket
+      this.scene.pushMatrix();
+      this.scene.translate(0, -5, 5);
+      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+      this.bucket.display();
+      this.scene.popMatrix();
+    }
+
     this.scene.popMatrix();
 
   }
@@ -93,12 +139,18 @@ export class MyHelicopter extends CGFobject {
   
     this.position.x += this.velocity.x * dt;
     this.position.z += this.velocity.z * dt;
+
+    if (this.state !== 'landed') {
+      this.topRotorAngle += deltaTime * 0.01; 
+    }
+    
   
     if (this.state === 'taking_off') {
       this.position.y += 8 * dt;
       if (this.position.y >= this.cruiseAltitude) {
         this.position.y = this.cruiseAltitude;
         this.state = 'flying';
+        this.bucketRelease = true;
       }
     }
   
@@ -109,6 +161,7 @@ export class MyHelicopter extends CGFobject {
         this.velocity = { x: 0, y: 0, z: 0 };
         this.speed = 0;
         this.state = 'landed';
+        this.bucketRelease = false;
       }
     }
   }

@@ -63,6 +63,10 @@ export class MyBuilding extends CGFobject {
 
   }
 
+  getHeight(){
+    return this.numFloors * this.floorHeight;
+  }
+
   display() {
 
     //Desenho do bloco central

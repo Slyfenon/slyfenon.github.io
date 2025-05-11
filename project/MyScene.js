@@ -63,7 +63,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
 
-    this.helicopter = new MyHelicopter(this);
+    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight());
     this.speedFactor = 0.3;
     this.rotationSpeed = 0.06;
 
@@ -78,6 +78,7 @@ export class MyScene extends CGFscene {
   initTextures() {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
+    this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
 
 
     this.bodyAppearance = new CGFappearance(this);
