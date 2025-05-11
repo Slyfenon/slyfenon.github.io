@@ -96,7 +96,7 @@ export class MyHelicopter extends CGFobject {
 
     // Top Rotor
     this.scene.pushMatrix();
-    this.scene.translate(0, 16.75, 5); // position on top of the helicopter
+    this.scene.translate(0, 16.75, 6); // position on top of the helicopter
     this.scene.rotate(this.topRotorAngle, 0, 1, 0); // spinning
     this.scene.scale(18, 0.3, 0.8); // further increased size: longer, thicker blade
     this.topRotor.display();

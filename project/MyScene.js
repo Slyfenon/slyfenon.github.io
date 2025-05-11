@@ -59,7 +59,7 @@ export class MyScene extends CGFscene {
     this.window = new MyWindow(this);
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
 
-    this.terrain = new MyTerrain(this, this.selectedTerrainTexture);
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
 
@@ -79,6 +79,7 @@ export class MyScene extends CGFscene {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
     this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
+    this.heightMap = new CGFtexture(this, "./textures/heightMap2.jpg");
 
 
     this.bodyAppearance = new CGFappearance(this);
@@ -174,7 +175,7 @@ export class MyScene extends CGFscene {
   }
 
   updateTerrainTexture(){
-    this.terrain = new MyTerrain(this, this.selectedTerrainTexture);
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
   }
 
   display() {
