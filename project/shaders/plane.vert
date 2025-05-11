@@ -15,7 +15,7 @@ void main() {
 
     float height = texture2D(uSampler2, aTextureCoord).r;
 
-    // We change the z axis because we need to rotate the plane -90 degress to become horizontal
+    // We alter the z axis because we need to rotate the plane -90 degress to become horizontal
     vec3 displacedPosition = aVertexPosition;
     displacedPosition.z += height * uScaleFactor; 
 

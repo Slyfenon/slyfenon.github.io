@@ -4,6 +4,7 @@ import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyHelicopter } from "./MyHelicopter.js";
+import { MyLake } from "./MyLake.js";
 
 /**
  * MyScene
@@ -62,6 +63,7 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
 
+    this.lake = new MyLake(this, this.waterTexture, this.heightMap);
 
     this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight());
     this.speedFactor = 0.3;
@@ -80,6 +82,7 @@ export class MyScene extends CGFscene {
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
     this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
     this.heightMap = new CGFtexture(this, "./textures/heightMap2.jpg");
+    this.waterTexture = new CGFtexture(this, "./textures/waterTexture.png");
 
 
     this.bodyAppearance = new CGFappearance(this);
@@ -158,6 +161,7 @@ export class MyScene extends CGFscene {
 
     this.checkKeys();
     this.helicopter.update(deltaTime);
+    this.lake.update(deltaTime);
     //Adjusting camera position
     //console.log("Camera position:", this.camera.position);
   }
@@ -202,6 +206,8 @@ export class MyScene extends CGFscene {
     if (this.displayPanorama) {
       this.panorama.display();
     }
+
+    this.lake.display();
 
     this.bodyAppearance.apply();
     this.helicopter.display();
