@@ -24,7 +24,7 @@ export class MyTerrain extends CGFobject {
     this.terrainShader = new CGFshader(this.scene.gl, "./shaders/plane.vert", "./shaders/plane.frag");
 
     this.terrainShader.setUniformsValues({
-      uScaleFactor: 15.0 ,
+      uScaleFactor: 35.0 ,
       uSampler2: 1
     });
     

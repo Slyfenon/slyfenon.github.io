@@ -42,7 +42,7 @@ export class MyLake extends CGFobject {
   display() {
     this.scene.pushMatrix();
 
-    this.scene.translate(0, 5, 0); 
+    this.scene.translate(-19, 11 , 17); 
     this.scene.scale(100, 1, 100); 
     this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 

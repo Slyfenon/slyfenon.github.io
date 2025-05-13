@@ -81,8 +81,8 @@ export class MyScene extends CGFscene {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
     this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
-    this.heightMap = new CGFtexture(this, "./textures/heightMap2.jpg");
-    this.waterTexture = new CGFtexture(this, "./textures/waterTexture.png");
+    this.heightMap = new CGFtexture(this, "./textures/heightMap4.jpg");
+    this.waterTexture = new CGFtexture(this, "./textures/waterTexture2.png");
 
 
     this.bodyAppearance = new CGFappearance(this);
