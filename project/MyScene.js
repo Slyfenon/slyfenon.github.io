@@ -1,8 +1,10 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
-import { MyWindow } from "./MyWindow.js"; 
+import { MyWindow } from "./MyWindow.js";
 import { MyBuilding } from "./MyBuilding.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyHelicopter } from "./MyHelicopter.js";
+import { MyLake } from "./MyLake.js";
 import { MyTree } from "./MyTree.js";
 import { MyForest } from './MyForest.js';
 
@@ -44,17 +46,32 @@ export class MyScene extends CGFscene {
       "Bricks": "textures/bricks.png",
       "Popcorn": "textures/popcorn.png",
       "Concrete": "textures/concrete.png"
-      };
+    };
 
     this.selectedBuildingTexture = "textures/bricks.png"; // textura inicial
+
+    this.terrainTextureList = {
+      "Grass": "textures/grass.png",
+      "Terrain 1": "textures/terrain1.png"
+    };
+
+    this.selectedTerrainTexture = this.terrainTextureList["Grass"];
 
     this.season = "Summer";
 
     this.window = new MyWindow(this);
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
 
-    this.terrain = new MyTerrain(this);
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
     this.panorama = new MyPanorama(this, this.panoramaTexture);
+
+    this.lake = new MyLake(this, this.waterTexture, this.heightMap);
+
+    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight());
+    this.speedFactor = 0.3;
+    this.rotationSpeed = 0.06;
+
+    this.lastUpdateTime = 0;
 
     //this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
     this.forest = new MyForest(this, 4, 5);
@@ -66,9 +83,20 @@ export class MyScene extends CGFscene {
 
   }
 
-  initTextures(){
+  initTextures() {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
-    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg")
+    this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
+    this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
+    this.heightMap = new CGFtexture(this, "./textures/heightMap4.jpg");
+    this.waterTexture = new CGFtexture(this, "./textures/waterTexture2.png");
+
+
+    this.bodyAppearance = new CGFappearance(this);
+    this.bodyAppearance.setTexture(null);
+    this.bodyAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+    this.bodyAppearance.setDiffuse(0.6, 0.6, 0.6, 1);
+    this.bodyAppearance.setSpecular(0.1, 0.1, 0.1, 1);
+    this.bodyAppearance.setShininess(10);
   }
 
   initLights() {
@@ -81,32 +109,69 @@ export class MyScene extends CGFscene {
     this.camera = new CGFcamera(
       90,
       0.1,
-      1000,
-      vec3.fromValues(200, 200, 200),
+      2000,
+      vec3.fromValues(-100, 50.89, -100),
       vec3.fromValues(0, 0, 0)
     );
   }
+
+  
   checkKeys() {
-    var text = "Keys pressed: ";
-    var keysPressed = false;
 
-    // Check for key codes e.g. in https://keycode.info/
+
+    let keyPressed = false;
+
     if (this.gui.isKeyPressed("KeyW")) {
-      text += " W ";
-      keysPressed = true;
+      this.helicopter.accelerate(5 * this.speedFactor);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyS")) {
+      this.helicopter.accelerate(-5 * this.speedFactor);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyA")) {
+      this.helicopter.turn(this.rotationSpeed);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      this.helicopter.turn(-this.rotationSpeed);
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyR")) {
+      this.helicopter.reset();
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyP")) {
+      this.helicopter.ascend();
+      keyPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyL")) {
+      this.helicopter.descend();
+      keyPressed = true;
     }
 
-    if (this.gui.isKeyPressed("KeyS")) {
-      text += " S ";
-      keysPressed = true;
+    if(this.gui.isKeyPressed("KeyC")){
+      this.camera.setPosition(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y + 40, this.helicopter.position.z + 40));
+      this.camera.setTarget(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y, this.helicopter.position.z)); 
     }
-    if (keysPressed)
-      console.log(text);
+
+    if (!keyPressed) {
+      this.helicopter.accelerate(-5 * this.speedFactor);
+    }
   }
+  
 
   update(t) {
+    const deltaTime = t - this.lastUpdateTime;
+    this.lastUpdateTime = t;
+
     this.checkKeys();
+    this.helicopter.update(deltaTime);
+    this.lake.update(deltaTime);
+    //Adjusting camera position
+    //console.log("Camera position:", this.camera.position);
   }
+
 
   setDefaultAppearance() {
     this.setAmbient(0.5, 0.5, 0.5, 1.0);
@@ -119,6 +184,9 @@ export class MyScene extends CGFscene {
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
   }
 
+  updateTerrainTexture(){
+    this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
+  }
   updateForestSeason() {
     const crownTexturePath = this.season === "Fall" ? "textures/yellow_leaves.jpg" : "textures/green_leaves.jpg";
     this.forest = new MyForest(this, this.forest.rows, this.forest.cols, crownTexturePath);
@@ -141,21 +209,26 @@ export class MyScene extends CGFscene {
     this.setDefaultAppearance();
 
     //Plane Display
-    if(this.displayTerrain){
+    if (this.displayTerrain) {
       this.terrain.display();
     }
 
-    if(this.displayPanorama){
+    if (this.displayPanorama) {
       this.panorama.display();
     }
-    
+
+    this.lake.display();
+
+    this.bodyAppearance.apply();
+    this.helicopter.display();
+
     this.setActiveShader(this.defaultShader);
 
     if (this.displayBuilding) {
       this.pushMatrix();
       this.translate(-100, 0, -100); // 2º quadrante plano xz
       this.building.display();
-      this.popMatrix();    
+      this.popMatrix();
     }
     
     if (this.displayForest) {
