@@ -109,7 +109,7 @@ export class MyScene extends CGFscene {
   update(t) {
     this.checkKeys();
     this.timeFactor = (t / 1000) % 1000;
-    this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
+    //this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
   }
 
   setDefaultAppearance() {
@@ -167,12 +167,6 @@ export class MyScene extends CGFscene {
       this.forest.display();
       this.popMatrix();
   }
-
-      // Fire
-      this.pushMatrix();
-      this.translate(20, 0, 20);
-      this.fire.display();
-      this.popMatrix();
 
   }
 }

@@ -13,7 +13,7 @@ export class MyTree extends CGFobject {
         this.trunkHeight = treeHeight * 0.8;
         this.useTexture = useTexture;
       
-        this.trunk = new MyCone(scene, 40, 1); 
+        this.trunk = new MyCone(scene, 20, 1); 
         this.trunkAppearance = new CGFappearance(scene);
         this.trunkAppearance.setAmbient(0.3, 0.2, 0.1, 1);
         this.trunkAppearance.setDiffuse(0.4, 0.3, 0.2, 1);
