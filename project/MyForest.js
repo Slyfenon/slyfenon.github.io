@@ -1,5 +1,6 @@
 import { CGFobject } from '../lib/CGF.js';
 import { MyTree } from './MyTree.js';
+import { MyFire } from './MyFire.js';
 
 export class MyForest extends CGFobject {
     constructor(scene, rows, cols, crownTexturePath = "textures/green_leaves.jpg") {
@@ -9,6 +10,7 @@ export class MyForest extends CGFobject {
         this.cols = cols;
 
         this.trees = [];
+        this.fires = [];
 
         for (let i = 0; i < rows; i++) {
             this.trees[i] = [];
@@ -36,6 +38,14 @@ export class MyForest extends CGFobject {
                     offsetX: offsetX,
                     offsetZ: offsetZ
                   };
+                const spacing = 15;
+
+                if (i > 0 && j > 0 && Math.random() < 0.7) {
+                    const fireX = (j - 0.5) * spacing;
+                    const fireZ = (i - 0.5) * spacing;
+                    const fire = new MyFire(this.scene, 3);
+                    this.fires.push({ fire: fire, x: fireX, z: fireZ });
+                }
             }
         }
     }
@@ -51,6 +61,13 @@ export class MyForest extends CGFobject {
                 treeData.tree.display();
                 this.scene.popMatrix();
             }
+        }
+
+        for (const fireData of this.fires) {
+            this.scene.pushMatrix();
+            this.scene.translate(fireData.x, 0, fireData.z);
+            fireData.fire.display();
+            this.scene.popMatrix();
         }
     }
 }

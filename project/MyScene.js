@@ -5,8 +5,8 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyHelicopter } from "./MyHelicopter.js";
 import { MyLake } from "./MyLake.js";
-import { MyTree } from "./MyTree.js";
 import { MyForest } from './MyForest.js';
+import { MyFire } from './MyFire.js';
 
 /**
  * MyScene
@@ -75,6 +75,8 @@ export class MyScene extends CGFscene {
 
     //this.tree = new MyTree(this, 15, 'X', 2, 25, [0.2, 0.6, 0.2]);
     this.forest = new MyForest(this, 4, 5);
+
+    this.fire = new MyFire(this);
 
     this.displayTerrain = true;
     this.displayPanorama = true;
@@ -170,6 +172,8 @@ export class MyScene extends CGFscene {
     this.lake.update(deltaTime);
     //Adjusting camera position
     //console.log("Camera position:", this.camera.position);
+    this.timeFactor = (t / 1000) % 1000;
+    //this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
   }
 
 
@@ -233,10 +237,10 @@ export class MyScene extends CGFscene {
     
     if (this.displayForest) {
       this.pushMatrix();
+      this.translate(25, 5, -125); // 2º quadrante plano xz
       this.forest.display();
       this.popMatrix();
   }
-
 
   }
 }
