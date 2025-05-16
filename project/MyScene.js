@@ -5,6 +5,7 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyHelicopter } from "./MyHelicopter.js";
 import { MyLake } from "./MyLake.js";
+import { MyTree } from "./MyTree.js";
 import { MyForest } from './MyForest.js';
 import { MyFire } from './MyFire.js';
 
