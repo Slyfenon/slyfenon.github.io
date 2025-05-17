@@ -7,10 +7,11 @@ import {CGFobject} from '../lib/CGF.js';
  * @param stacks - number of divisions along the Y axis
 */
 export class MyPyramid extends CGFobject {
-    constructor(scene, slices, stacks) {
+    constructor(scene, slices, stacks, drawBase = true) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
+        this.drawBase = drawBase;
         this.initBuffers();
     }
     initBuffers() {
@@ -63,26 +64,27 @@ export class MyPyramid extends CGFobject {
             
         }
         
-        ang = 0;
-        const baseCenterIndex = this.vertices.length / 3;
-        this.vertices.push(0, 0, 0); // centro da base
-        this.normals.push(0, -1, 0); // normal para baixo
+        if (this.drawBase) {
+            ang = 0;
+            const baseCenterIndex = this.vertices.length / 3;
+            this.vertices.push(0, 0, 0); // centro da base
+            this.normals.push(0, -1, 0); // normal para baixo
 
-        for (let i = 0; i < this.slices; i++) {
-        const x = Math.cos(ang);
-        const z = -Math.sin(ang);
-        this.vertices.push(x, 0, z);
-        this.normals.push(0, -1, 0);
-        ang += alphaAng;
+            for (let i = 0; i < this.slices; i++) {
+            const x = Math.cos(ang);
+            const z = -Math.sin(ang);
+            this.vertices.push(x, 0, z);
+            this.normals.push(0, -1, 0);
+            ang += alphaAng;
+            }
+
+            for (let i = 0; i < this.slices; i++) {
+            const center = baseCenterIndex;
+            const v1 = baseCenterIndex + 1 + i;
+            const v2 = baseCenterIndex + 1 + ((i + 1) % this.slices);
+            this.indices.push(center, v2, v1); // sentido horário invertido
+            }
         }
-
-        for (let i = 0; i < this.slices; i++) {
-        const center = baseCenterIndex;
-        const v1 = baseCenterIndex + 1 + i;
-        const v2 = baseCenterIndex + 1 + ((i + 1) % this.slices);
-        this.indices.push(center, v2, v1); // sentido horário invertido
-        }
-
         this.texCoords = [];
 
         const repeatU = 4;
