@@ -40,7 +40,7 @@ export class MyForest extends CGFobject {
                   };
                 const spacing = 15;
 
-                if (i > 0 && j > 0 && Math.random() < 0.7) {
+                if (i > 0 && j > 0 && Math.random() < 0.5) {
                     const fireX = (j - 0.5) * spacing;
                     const fireZ = (i - 0.5) * spacing;
                     const fire = new MyFire(this.scene, 3);

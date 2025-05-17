@@ -174,7 +174,7 @@ export class MyScene extends CGFscene {
     //Adjusting camera position
     //console.log("Camera position:", this.camera.position);
     this.timeFactor = (t / 1000) % 1000;
-    //this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
+    this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
   }
 
 
