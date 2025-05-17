@@ -19,6 +19,7 @@ export class MyInterface extends CGFinterface {
 
         this.initKeys();
 
+        this.gui.add(this.scene, 'displayAxis').name('Display Axis');
 
         this.gui.add(this.scene, 'displayPanorama').name('DisplayPanorama');
         this.gui.add(this.scene, 'displayTerrain').name('DisplayTerrain');
@@ -37,7 +38,7 @@ export class MyInterface extends CGFinterface {
         .name('Terrain Texture')
         .onChange(() => this.scene.updateTerrainTexture());
 
-        this.gui.add(this.scene, 'season', ["Summer", "Fall"]).name("Season").onChange(() => {
+        this.gui.add(this.scene, 'season', ["Summer", "Fall", "Winter"]).name("Season").onChange(() => {
             this.scene.updateForestSeason();
         });
         

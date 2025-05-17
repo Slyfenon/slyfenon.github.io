@@ -20,7 +20,6 @@ export class MyForest extends CGFobject {
                 let crownColor;
 
                 if (scene.season === "Fall") {
-
                     crownColor = [0.6 + Math.random() * 0.4, 0.3 + Math.random() * 0.4, Math.random() * 0.2] ;
                 } else {                   
                     crownColor = [Math.random() * 0.3, 0.4 + Math.random() * 0.5, Math.random() * 0.3];

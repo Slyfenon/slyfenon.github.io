@@ -55,7 +55,7 @@ export class MyScene extends CGFscene {
       "Terrain 1": "textures/terrain1.png"
     };
 
-    this.selectedTerrainTexture = this.terrainTextureList["Grass"];
+    this.selectedTerrainTexture = this.terrainTextureList["Terrain 1"];
 
     this.season = "Summer";
 
@@ -80,6 +80,7 @@ export class MyScene extends CGFscene {
     this.displayPanorama = true;
     this.displayBuilding = true;
     this.displayForest = true;
+    this.displayAxis = true;
 
   }
 
@@ -204,7 +205,12 @@ export class MyScene extends CGFscene {
     this.applyViewMatrix();
 
     // Draw axis
-    this.axis.display();
+    if(this.displayAxis){
+      this.pushMatrix();
+      this.translate(0,-20, 0);
+      this.axis.display();
+      this.popMatrix();
+    }
 
     this.setDefaultAppearance();
 
@@ -233,6 +239,7 @@ export class MyScene extends CGFscene {
     
     if (this.displayForest) {
       this.pushMatrix();
+      this.translate(2, 3, -105);
       this.forest.display();
       this.popMatrix();
   }
