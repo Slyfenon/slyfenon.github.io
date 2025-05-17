@@ -65,39 +65,39 @@ export class MyTree extends CGFobject {
 
       display() {
         this.scene.pushMatrix();
-
+      
         if (this.tiltAxis.toUpperCase() === 'X') {
           this.scene.rotate(this.tiltAngle * Math.PI / 180, 1, 0, 0);
         } else if (this.tiltAxis.toUpperCase() === 'Z') {
           this.scene.rotate(this.tiltAngle * Math.PI / 180, 0, 0, 1);
         }
-
+      
         (this.useTexture ? this.trunkTextureAppearance : this.trunkAppearance).apply();
         this.scene.pushMatrix();
         this.scene.scale(this.trunkRadius, this.trunkHeight * 0.85, this.trunkRadius);
         this.trunk.display();
         this.scene.popMatrix();
-
-
-        (this.useTexture ? this.crownTextureAppearance : this.crownAppearance).apply();
-
-        const baseY = this.trunkHeight * 0.2;
-        const baseScale = this.trunkRadius * 2.2;
-        const reductionFactor = 0.80;
-        
-        for (let i = 0; i < this.numPyramids; i++) {
-          const y = baseY + i * this.pyramidHeight * 0.6;
-          const scaleXZ = baseScale * Math.pow(reductionFactor, i);
-        
-          this.scene.pushMatrix();
-          this.scene.translate(0, y, 0);
-          this.scene.scale(scaleXZ, this.pyramidHeight, scaleXZ);
-          this.crownLayers[i].display();
-          this.scene.popMatrix();
+      
+        if (this.scene.season !== "Winter") { // Only display leaves if not Winter
+          (this.useTexture ? this.crownTextureAppearance : this.crownAppearance).apply();
+      
+          const baseY = this.trunkHeight * 0.2;
+          const baseScale = this.trunkRadius * 2.2;
+          const reductionFactor = 0.80;
+      
+          for (let i = 0; i < this.numPyramids; i++) {
+            const y = baseY + i * this.pyramidHeight * 0.6;
+            const scaleXZ = baseScale * Math.pow(reductionFactor, i);
+      
+            this.scene.pushMatrix();
+            this.scene.translate(0, y, 0);
+            this.scene.scale(scaleXZ, this.pyramidHeight, scaleXZ);
+            this.crownLayers[i].display();
+            this.scene.popMatrix();
+          }
         }
-        
-        
+      
         this.scene.popMatrix();
-
       }
+      
 }
