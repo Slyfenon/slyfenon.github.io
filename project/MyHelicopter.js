@@ -1,6 +1,7 @@
 import {CGFappearance, CGFobject} from '../lib/CGF.js';
 import { MyUnitCube } from '../tp3/MyUnitCube.js';
 import { MyBucket } from './MyBucket.js';
+import { MyCone } from './MyCone.js';
 import { MyCylinder } from "./MyCylinder.js";
 import { MySphere } from './MySphere.js';
 
@@ -21,18 +22,26 @@ export class MyHelicopter extends CGFobject {
 
 
     this.cylinder = new MyCylinder(scene, 30, 20, 1, 2);
-    this.tail = new MyCylinder(scene, 30, 20, 0.4, 2);
+    this.tail = new MyCone(scene, 50, 100);
     this.sphere = new MySphere(scene, 20, 20, true, 1);
     this.skids1 = new MyUnitCube(scene);
     this.skids2 = new MyUnitCube(scene);
+    this.skids3 = new MyUnitCube(scene);
+    this.skids4 = new MyUnitCube(scene);
     this.bucket = new MyBucket(scene);
 
     this.topRotor = new MyUnitCube(scene); 
     this.topRotorAngle = 0;
+    
+
+    this.sideRotor = new MyUnitCube(scene); 
+    this.sideRotorAngle = 0;
+    
 
 
     this.helicopterMaterial = new CGFappearance(this.scene);
     this.helicopterMaterial.setTexture(texture);
+    
 
     this.initBuffers();
   }
@@ -85,11 +94,25 @@ export class MyHelicopter extends CGFobject {
     this.skids2.display();
     this.scene.popMatrix();
 
+    this.scene.pushMatrix();
+    this.scene.translate(3, 6, 6);
+    this.scene.rotate(Math.PI, 1, 0, 0); // Rotate to make it vertical
+    this.scene.scale(0.6, 7.7, 0.4); // Adjust scale to match vertical orientation
+    this.skids3.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-3, 6, 6);
+    this.scene.rotate(Math.PI, 1, 0, 0); // Rotate to make it vertical
+    this.scene.scale(0.6, 7.7, 0.4); // Adjust scale to match vertical orientation
+    this.skids4.display();
+    this.scene.popMatrix();
+
     // Tail
     this.scene.pushMatrix();
-    this.scene.translate(1, 14, -8);
-    this.scene.rotate(Math.PI / 10, 1, 0, 0);
-    this.scene.scale(5, 5, 5);
+    this.scene.translate(0, 10, 0);
+    this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+    this.scene.scale(5, 8, 5);
     this.tail.display();
     this.scene.popMatrix();
 
@@ -103,13 +126,22 @@ export class MyHelicopter extends CGFobject {
     this.scene.popMatrix();
 
 
+    //Side Rotor
+    this.scene.pushMatrix();
+    this.scene.translate(0, 10, -7.5); // position on the side of the helicopter
+    this.scene.rotate(this.sideRotorAngle, 1, 0, 0); // spinning around the x-axis
+    this.scene.scale(0.3, 8, 0.8); // adjusted size for a side rotor
+    this.sideRotor.display();
+    this.scene.popMatrix();
+
+
     // BUCKET AND ROPE
     if (this.bucketRelease) {
       // Rope
       this.scene.pushMatrix();
       this.scene.translate(0, -2.5, 5);
       this.scene.scale(0.1, 5, 0.1);
-      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+      this.scene.rotate(-Math.PI, 1, 0, 0);
       this.cylinder.display();
       this.scene.popMatrix();
 
@@ -142,6 +174,8 @@ export class MyHelicopter extends CGFobject {
 
     if (this.state !== 'landed') {
       this.topRotorAngle += deltaTime * 0.01; 
+      this.sideRotorAngle += deltaTime * 0.02; 
+
     }
     
   
