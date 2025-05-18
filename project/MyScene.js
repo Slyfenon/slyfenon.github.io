@@ -145,12 +145,18 @@ export class MyScene extends CGFscene {
       this.helicopter.reset();
       keyPressed = true;
     }
-    if (this.gui.isKeyPressed("KeyP")) {
-      this.helicopter.ascend();
+    if (this.gui.isKeyPressed("KeyO")) {
+      this.helicopter.handleKeyPress("O");
       keyPressed = true;
     }
+  
     if (this.gui.isKeyPressed("KeyL")) {
-      this.helicopter.descend();
+      this.helicopter.handleKeyPress("L");
+      keyPressed = true;
+    }
+  
+    if (this.gui.isKeyPressed("KeyP")) {
+      this.helicopter.handleKeyPress("P");
       keyPressed = true;
     }
 
