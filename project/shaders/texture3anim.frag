@@ -11,7 +11,7 @@ uniform float timeFactor;
 void main() {
 	vec2 uv = fract(vTextureCoord + vec2(timeFactor * 0.2, 0.0));
 	vec4 color = texture2D(uSampler, uv);	
-	vec4 filter = texture2D(uSampler2, fract(vTextureCoord + vec2(timeFactor * 0.2, 0.0)));
+	vec4 filter = texture2D(uSampler2, uv);
 
 	if (filter.b > 0.5)
 		//laranja brilhante - vec4(1.0, 0.5, 0.0, 1.0)
