@@ -10,7 +10,7 @@ export class MyHelicopter extends CGFobject {
   constructor(scene, texture, buildingHeigth) {
     super(scene);
 
-    this.position = { x: -100, y: buildingHeigth + 4.5, z: -106 };
+    this.position = { x: -100, y: buildingHeigth + 8.5, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0; // ângulo em radianos
     this.speed = 0;
@@ -240,22 +240,35 @@ export class MyHelicopter extends CGFobject {
   
       case 'lowering':
         this.velocity = { x: 0, y: -8, z: 0 };
-        this.position.y += this.velocity.y * dt;
-        if (this.position.y <= 15) {
-          this.position.y = 15;
+        this.position.y += this.velocity.y * dt;        
+        if (this.position.y <= 25) {
+          this.position.y = 25;
           this.state = 'filling';
           this.bucketFillLevel = 0;
         }
         break;
   
-      case 'filling':
-        this.bucketFillLevel += dt;
-        if (this.bucketFillLevel >= 1.4) {
-          this.bucketFillLevel = 1.4;
-          this.bucketFilled = true;
-          this.state = 'filled';
-        }
-        break;
+        case 'filling':
+          this.scene.camera.setPosition(vec3.fromValues(
+            this.position.x,
+            this.position.y + 3,    
+            this.position.z + 2     
+          ));
+          this.scene.camera.setTarget(vec3.fromValues(
+            this.position.x,
+            this.position.y - 5,   
+            this.position.z + 5    
+          ));
+        
+          this.bucketFillLevel += dt;
+          if (this.bucketFillLevel >= 1.4) {
+            this.bucketFillLevel = 1.4;
+            this.bucketFilled = true;
+            this.state = 'filled';
+            this.scene.camera.setPosition(vec3.fromValues(this.position.x, this.position.y + 40, this.position.z + 40));
+            this.scene.camera.setTarget(vec3.fromValues(this.position.x, this.position.y, this.position.z)); 
+          }
+          break;
   
       case 'filled':
         break;
@@ -276,6 +289,7 @@ export class MyHelicopter extends CGFobject {
           this.position.y = 22.25;
           this.velocity = { x: 0, y: 0, z: 0 };
           this.state = 'landed';
+          this.bucketRelease = false;
         }
         break;
   
@@ -283,6 +297,7 @@ export class MyHelicopter extends CGFobject {
         // movimentação ativa permitida
         this.position.x += this.velocity.x * dt;
         this.position.z += this.velocity.z * dt;
+        this.bucketRelease = true;
         break;
   
       case 'landed':
@@ -319,7 +334,7 @@ export class MyHelicopter extends CGFobject {
   }
 
   reset() {
-    this.position = { x: -100, y: 22.25, z: -106 };
+    this.position = { x: -100, y: 26.25, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0;
     this.speed = 0;
