@@ -4,8 +4,8 @@ import { MyPyramid } from "./MyPyramid.js";
 export class MyFire extends CGFobject {
   constructor(scene, fireRadius = 3) {
     super(scene);
-    //this.shader = new CGFshader(scene.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag");
-    //this.shader.setUniformsValues({ uSampler2: 1, timeFactor: 0 });
+    this.shader = new CGFshader(scene.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag");
+    this.shader.setUniformsValues({ uSampler2: 1, timeFactor: 0 });
     
     this.flames = [];
     this.positions = [];
@@ -23,7 +23,7 @@ export class MyFire extends CGFobject {
       this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     }
 
-    //this.filterTexture = new CGFtexture(scene, "textures/resized_filter.png");
+    this.filterTexture = new CGFtexture(scene, "textures/resized_filter.png");
 
     this.appearance.setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.appearance.setSpecular(0.0, 0.0, 0.0, 1.0);
@@ -116,21 +116,26 @@ export class MyFire extends CGFobject {
   }
 
   display() {
-    //this.scene.setActiveShader(this.shader);
 
-    //this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
-    //this.appearance.texture.bind();
+    if (this.useTexture && this.appearance.texture) {
+      this.scene.setActiveShader(this.shader);
+      this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
+      this.appearance.texture.bind();
+      this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
+      this.filterTexture.bind();
 
-    //this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
-    //this.filterTexture.bind();
+      this.shader.setUniformsValues({
+        uSampler: 0,
+        timeFactor: this.scene.timeFactor || 0
+      });
+    } else {
+      this.scene.setActiveShader(this.scene.defaultShader);
+    }
 
-    //this.shader.setUniformsValues({
-    //    uSampler: 0,                                 
-   //    timeFactor: this.scene.timeFactor || 0
-   // });
 
     for (let i = 0; i < this.flames.length; i++) {
       const { x, z, height } = this.positions[i];
+
       const baseScale = 0.5 + height * 0.35; // aumenta base conforme altura
 
       //this.shader.setUniformsValues({ flameOffset: this.offsets[i] });
@@ -150,7 +155,8 @@ export class MyFire extends CGFobject {
       this.scene.popMatrix();
     }
 
-    //this.scene.setActiveShader(this.scene.defaultShader);
+    this.scene.setActiveShader(this.scene.defaultShader);
+
 }
 
 }
