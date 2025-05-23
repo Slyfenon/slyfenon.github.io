@@ -10,6 +10,7 @@ export class MyHelicopter extends CGFobject {
   constructor(scene, texture, buildingHeigth, forest) {
     super(scene);
 
+    this.buildingHeigth = buildingHeigth
     this.forest = forest
     this.position = { x: -100, y: buildingHeigth + 8.5, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
@@ -287,15 +288,22 @@ export class MyHelicopter extends CGFobject {
         }
         break;
   
-      case 'landing':
-        this.position.y += this.velocity.y * dt;
-        if (this.position.y <= 22.25) {
-          this.position.y = 22.25;
-          this.velocity = { x: 0, y: 0, z: 0 };
-          this.state = 'landed';
-          this.bucketRelease = false;
-        }
-        break;
+        case 'landing':
+          if (this.velocity.y === 0) {
+            this.velocity = { x: 0, y: -8, z: 0 };
+          }
+        
+          this.position.y += this.velocity.y * dt;
+        
+          if (this.position.y <= 26.25) {
+            this.position.y = 26.25;
+            this.velocity = { x: 0, y: 0, z: 0 };
+            this.state = 'landed';
+            this.bucketRelease = false;
+            this.orientation = 0;
+          }
+          break;
+        
   
       case 'flying':
         // movimentação ativa permitida
@@ -308,6 +316,31 @@ export class MyHelicopter extends CGFobject {
       case 'idle':
         // parado no heliporto
         break;
+      case 'returning':
+          const targetPosition = { x: -100, y: this.cruiseAltitude, z: -106 };
+  
+          const dx = targetPosition.x - this.position.x;
+          const dz = targetPosition.z - this.position.z;
+          const distance = Math.sqrt(dx * dx + dz * dz);
+  
+          // Rotate to face direction of movement
+          if (distance > 0.5) {
+            this.orientation = Math.atan2(dx, dz); // rotate to face target
+            const moveSpeed = 15; // constant speed for return
+            const vx = (dx / distance) * moveSpeed;
+            const vz = (dz / distance) * moveSpeed;
+  
+            this.velocity = { x: vx, y: 0, z: vz };
+            this.position.x += vx * dt;
+            this.position.z += vz * dt;
+          } else {
+            // Reached helicenter
+            this.position.x = targetPosition.x;
+            this.position.z = targetPosition.z;
+            this.velocity = { x: 0, y: 0, z: 0 };
+            this.state = 'landing'; // descend when arrived
+          }
+          break;
     }
   
     if(this.state !== 'idle'){
@@ -394,13 +427,13 @@ export class MyHelicopter extends CGFobject {
         if (this.isOverLake && this.speed === 0 && !this.bucketFilled) {
           this.state = 'lowering';
           this.bucketRelease = true;
-        } else if (!this.bucketFilled) {
-          this.state = 'landing';
-          this.speed = 0;
-          this.velocity = { x: 0, y: -4, z: 0 };
+        } else if (this.state != 'returning') {
+          this.state = 'returning';
+          this.speed = 0; // Stop any current movement
+          this.velocity = { x: 0, y: 0, z: 0 }; // Clear velocity
+          console.log("Helicopter initiated return to base.");
         }
         break;
-  
       case 'P':
         if (this.state === 'filling' || this.state === 'filled' || this.state === 'landed' || this.state === 'idle') {
           this.state = 'rising';
@@ -411,6 +444,7 @@ export class MyHelicopter extends CGFobject {
   
       case 'O':
         if (this.bucketFilled && this.state === 'flying') {
+          console.log("EXTINGUISH");
           const radius = 30; 
           if(this.eliminateNearbyFires(radius)){
             console.log("RESETING");

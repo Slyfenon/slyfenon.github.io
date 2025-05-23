@@ -37,6 +37,10 @@ export class MyScene extends CGFscene {
     this.appearance = new CGFappearance(this);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
+    document.getElementById('counter').innerText = `Counter: ${this.counter}`;
+    this.counter = 90;
+    this.lastCounterUpdate = 0;
+
 
     this.setUpdatePeriod(50);
 
@@ -176,15 +180,39 @@ export class MyScene extends CGFscene {
   update(t) {
     const deltaTime = t - this.lastUpdateTime;
     this.lastUpdateTime = t;
+  
+    if (t - this.lastCounterUpdate > 1000) { 
+      if (this.forest.fires.size === 0 && this.counter > 0) {
+        const counterElement = document.getElementById('counter');
+        if (counterElement) {
+          counterElement.innerText = `YOU WIN`;
+        }
+      }
+      else{
 
+      this.counter--;
+      this.lastCounterUpdate = t;
+  
+      const counterElement = document.getElementById('counter');
+      if (counterElement) {
+        counterElement.innerText = `Counter: ${this.counter}`;
+      }
+
+      if (this.counter <= 0) {
+        counterElement.innerText = `GAME OVER`;
+        this.counter = 0;
+      }
+    }
+    }
+  
     this.checkKeys();
     this.helicopter.update(deltaTime);
     this.lake.update(deltaTime);
-    //Adjusting camera position
-    //console.log("Camera position:", this.camera.position);
+  
     this.timeFactor = (t / 1000) % 1000;
     this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
   }
+  
 
 
   setDefaultAppearance() {
