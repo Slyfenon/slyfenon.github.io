@@ -15,10 +15,6 @@ export class MyLake extends CGFobject {
       "./shaders/lake.frag"
     );
 
-    if (!this.waterShader.compiledOk) {
-        console.error("Shader compilation failed!");
-    }
-
     this.lakeMaterial = new CGFappearance(this.scene);
     this.lakeMaterial.setTexture(this.lakeTexture);
 

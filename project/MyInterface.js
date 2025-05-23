@@ -59,6 +59,9 @@ export class MyInterface extends CGFinterface {
         // called when a key is pressed down
         // mark it as active in the array
         this.activeKeys[event.code] = true;
+        if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+        }
     };
 
     processKeyUp(event) {

@@ -1,5 +1,12 @@
 # CG 2024/2025
 
+# TODO LIST
+
+- Parametrizar Panorama
+- Fix helicopter velocity
+- Extinguish Fire
+
+
 ## Group T02G03
 
 ## Project Notes
