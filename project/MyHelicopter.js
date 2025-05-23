@@ -7,9 +7,10 @@ import { MyCylinder } from "./MyCylinder.js";
 import { MySphere } from './MySphere.js';
 
 export class MyHelicopter extends CGFobject {
-  constructor(scene, texture, buildingHeigth) {
+  constructor(scene, texture, buildingHeigth, forest) {
     super(scene);
 
+    this.forest = forest
     this.position = { x: -100, y: buildingHeigth + 8.5, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0; // ângulo em radianos
@@ -226,6 +227,9 @@ export class MyHelicopter extends CGFobject {
     if(this.isOverLake){
       console.log("WATER");
     }
+    if(this.isOverFire){
+      console.log("FIRE");
+    }
   
     switch (this.state) {
       case 'taking_off':
@@ -241,8 +245,8 @@ export class MyHelicopter extends CGFobject {
       case 'lowering':
         this.velocity = { x: 0, y: -8, z: 0 };
         this.position.y += this.velocity.y * dt;        
-        if (this.position.y <= 25) {
-          this.position.y = 25;
+        if (this.position.y <= 18) {
+          this.position.y = 18;
           this.state = 'filling';
           this.bucketFillLevel = 0;
         }
@@ -359,6 +363,30 @@ export class MyHelicopter extends CGFobject {
     }
   }
 
+  eliminateNearbyFires(radius) {
+    console.log("Eliminating nearby fires...");
+    console.log(`Current position: x=${this.position.x}, z=${this.position.z}`);
+    console.log(`Radius: ${radius}`);
+    console.log("Fires before elimination:", this.forest.fires);
+
+    const initialFireCount = this.forest.fires.length;
+
+    this.forest.fires = this.forest.fires.filter(fire => {
+      const dx = (fire.x + 25) - this.position.x;
+      const dz = (fire.z - 125) - this.position.z;
+      const distance = Math.sqrt(dx * dx + dz * dz);
+      console.log(`Fire position: x=${fire.x}, z=${fire.z}, distance=${distance}`);
+      return distance > radius;
+    });
+
+    const finalFireCount = this.forest.fires.length;
+
+    console.log("Fires after elimination:", this.forest.fires);
+    console.log(`Fires remaining: ${this.forest.fires.length}`);
+
+    return initialFireCount !== finalFireCount;
+  }
+
 
   handleKeyPress(key) {  
     switch (key) {
@@ -382,14 +410,13 @@ export class MyHelicopter extends CGFobject {
         break;
   
       case 'O':
-        if (this.bucketFilled && this.isOverFire && this.state === 'flying') {
-          this.bucketFilled = false;
-          this.bucketFillLevel = 0;
-          this.bucketRelease = false;
-          this.state = 'idle';
-  
-          if (this.scene.fireManager) {
-            this.scene.fireManager.extinguish();
+        if (this.bucketFilled && this.state === 'flying') {
+          const radius = 30; 
+          if(this.eliminateNearbyFires(radius)){
+            console.log("RESETING");
+            this.bucketFilled = false;
+            this.bucketFillLevel = 0;
+            this.bucketRelease = false;
           }
         }
         break;

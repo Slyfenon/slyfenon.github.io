@@ -68,7 +68,6 @@ export class MyScene extends CGFscene {
 
     this.lake = new MyLake(this, this.waterTexture, this.heightMap);
 
-    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight());
     this.speedFactor = 0.3;
     this.rotationSpeed = 0.06;
 
@@ -78,6 +77,9 @@ export class MyScene extends CGFscene {
     this.forest = new MyForest(this, 4, 5);
 
     this.fire = new MyFire(this);
+
+    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight(), this.forest);
+
 
     this.displayTerrain = true;
     this.displayPanorama = true;
