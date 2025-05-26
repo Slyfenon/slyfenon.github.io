@@ -82,7 +82,7 @@ export class MyScene extends CGFscene {
 
     this.fire = new MyFire(this);
 
-    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building.getHeight(), this.forest);
+    this.helicopter = new MyHelicopter(this, this.helicopterTexture, this.building, this.forest);
 
 
     this.displayTerrain = true;
@@ -97,6 +97,9 @@ export class MyScene extends CGFscene {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
     this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
+    this.helicenter = new CGFtexture(this, "./textures/helipad.png");
+    this.helicenterUPTexture = new CGFtexture(this, "./textures/upHelicenter.png");
+    this.helicenterDownTexture = new CGFtexture(this, "./textures/downHelicenter.png");
     this.heightMap = new CGFtexture(this, "./textures/heightMap4.jpg");
     this.waterTexture = new CGFtexture(this, "./textures/waterTexture2.png");
 
@@ -188,21 +191,20 @@ export class MyScene extends CGFscene {
           counterElement.innerText = `YOU WIN`;
         }
       }
-      else{
-
-      this.counter--;
-      this.lastCounterUpdate = t;
+      else {
+        this.counter--;
+        this.lastCounterUpdate = t;
   
-      const counterElement = document.getElementById('counter');
-      if (counterElement) {
-        counterElement.innerText = `Counter: ${this.counter}`;
-      }
+        const counterElement = document.getElementById('counter');
+        if (counterElement) {
+          counterElement.innerText = `Counter: ${this.counter}`;
+        }
 
-      if (this.counter <= 0) {
-        counterElement.innerText = `GAME OVER`;
-        this.counter = 0;
+        if (this.counter <= 0) {
+          counterElement.innerText = `GAME OVER`;
+          this.counter = 0;
+        }
       }
-    }
     }
   
     this.checkKeys();
@@ -211,8 +213,28 @@ export class MyScene extends CGFscene {
   
     this.timeFactor = (t / 1000) % 1000;
     this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
+
+    // Check if the helicopter is rising and alternate the building texture
+    if (this.helicopter.state === "rising") {
+      if (Math.floor(t / 1000) % 2 === 0) {
+        this.building.setHelipadTexture(this.helicenterUPTexture);
+      } else {
+        this.building.setHelipadTexture(this.helicenter);
+      }
+    }
+
+    if (this.helicopter.state === "landing") {
+      if (Math.floor(t / 1000) % 2 === 0) {
+        this.building.setHelipadTexture(this.helicenterDownTexture);
+      } else {
+        this.building.setHelipadTexture(this.helicenter);
+      }
+    }
+
+    if( this.helicopter.state !== "rising" && this.helicopter.state !== "landing") {
+      this.building.setHelipadTexture(this.helicenter);
+    }
   }
-  
 
 
   setDefaultAppearance() {

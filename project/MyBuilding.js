@@ -35,13 +35,7 @@ export class MyBuilding extends CGFobject {
 
     this.cube = new MyUnitCubeQuad(scene, bricksTexture, bricksTexture, bricksTexture, bricksTexture, bricksTexture, bricksTexture);
 
-    this.helipadAppearance = new CGFappearance(scene);
-    this.helipadAppearance.setTexture(new CGFtexture(scene, "textures/helipad.png"));
-    this.helipadAppearance.setTextureWrap('REPEAT', 'REPEAT');
-    this.helipadAppearance.setAmbient(1, 1, 1, 1);
-    this.helipadAppearance.setDiffuse(1, 1, 1, 1);
-    this.helipadAppearance.setSpecular(0, 0, 0, 1);
-    this.helipadAppearance.setShininess(1.0);
+    this.setHelipadTexture(this.scene.helicenter);
 
     this.doorAppearance = new CGFappearance(scene);
     this.doorAppearance.setTexture(new CGFtexture(scene, "textures/door.png"));
@@ -65,6 +59,18 @@ export class MyBuilding extends CGFobject {
 
   getHeight(){
     return this.numFloors * this.floorHeight;
+  }
+
+  setHelipadTexture(texture) {
+    if (texture) {
+      this.helipadAppearance = new CGFappearance(this.scene);
+      this.helipadAppearance.setTexture(texture);
+      this.helipadAppearance.setTextureWrap('REPEAT', 'REPEAT');
+      this.helipadAppearance.setAmbient(1, 1, 1, 1);
+      this.helipadAppearance.setDiffuse(1, 1, 1, 1);
+      this.helipadAppearance.setSpecular(0, 0, 0, 1);
+      this.helipadAppearance.setShininess(1.0);
+    }
   }
 
   display() {

@@ -7,12 +7,13 @@ import { MyCylinder } from "./MyCylinder.js";
 import { MySphere } from './MySphere.js';
 
 export class MyHelicopter extends CGFobject {
-  constructor(scene, texture, buildingHeigth, forest) {
+  constructor(scene, texture, building, forest) {
     super(scene);
 
-    this.buildingHeigth = buildingHeigth
-    this.forest = forest
-    this.position = { x: -100, y: buildingHeigth + 8.5, z: -106 };
+    this.building = building;
+    this.buildingHeigth = building.getHeight();
+    this.forest = forest;
+    this.position = { x: -100, y: this.buildingHeigth + 8.5, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
     this.orientation = 0; // ângulo em radianos
     this.speed = 0;
@@ -138,6 +139,13 @@ export class MyHelicopter extends CGFobject {
     this.topRotor.display();
     this.scene.popMatrix();
 
+    // Cross Top Rotor
+    this.scene.pushMatrix();
+    this.scene.translate(0, 16.75, 6); 
+    this.scene.rotate(this.topRotorAngle + Math.PI / 2, 0, 1, 0); 
+    this.scene.scale(18, 0.3, 0.8); 
+    this.topRotor.display();
+    this.scene.popMatrix();
 
     //Side Rotor
     this.scene.pushMatrix();
