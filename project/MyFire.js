@@ -4,7 +4,7 @@ import { MyPyramid } from "./MyPyramid.js";
 export class MyFire extends CGFobject {
   constructor(scene, fireRadius = 3) {
     super(scene);
-    this.shader = new CGFshader(scene.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag");
+    this.shader = new CGFshader(scene.gl, "shaders/fire.vert", "shaders/fire.frag");
     this.shader.setUniformsValues({ uSampler2: 1, timeFactor: 0 });
     
     this.flames = [];
