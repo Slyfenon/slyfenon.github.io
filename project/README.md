@@ -34,3 +34,7 @@ Na implementacao da classe **MyBuilding**, optou-se por passar uma textura em ve
 #### Final Helicopter
 
 ![Screenshot 5](screenshots/project-t02g03-5.png)
+
+### Part 5 - Water and Fire
+
+![Screenshot 6](screenshots/project-t02g03-6.png)
