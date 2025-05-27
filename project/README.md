@@ -11,8 +11,16 @@
 
 ## Project Notes
 
+### Part 1 - Sky-Sphere
+
+![Screenshot 1](screenshots/project-t02g03-1.png)
+
 ### Part 2 - Fire-fighters Building
 
 Na implementacao da classe **MyBuilding**, optou-se por passar uma textura em vez de uma cor como argumento do construtor. Além disso, é possível selecionar entre escolher várias texturas para o edifício, o que permite um maior realismo e facilita a personalização do seu aspeto.
 
-![Screenshot 1](screenshots/cg-t02g03-project-2.png)
+![Screenshot 2](screenshots/project-t02g03-2.png)
+
+### Part 3 - Trees and forest
+
+![Screenshot 3](screenshots/project-t02g03-3.png)
