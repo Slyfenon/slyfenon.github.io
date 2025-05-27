@@ -21,12 +21,16 @@ Na implementacao da classe **MyBuilding**, optou-se por passar uma textura em ve
 
 ![Screenshot 2](screenshots/project-t02g03-2.png)
 
-### Part 3 - Trees and forest
+### Part 3 - Trees and Forest
 
 ![Screenshot 3](screenshots/project-t02g03-3.png)
 
 ### Part 4 - Helicopter
 
-#### Helicopter modeling
+#### Helicopter Modeling
 
 ![Screenshot 4](screenshots/project-t02g03-4.png)
+
+#### Final Helicopter
+
+![Screenshot 5](screenshots/project-t02g03-5.png)
