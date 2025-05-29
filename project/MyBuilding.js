@@ -1,6 +1,7 @@
 import { CGFobject, CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 import { MyPlane } from "./MyPlane.js";
+import { MySphere } from "./MySphere.js";
 
 export class MyBuilding extends CGFobject {
   constructor(scene, totalWidth, numFloors, windowsPerFloor, window, texturePath) {
@@ -22,6 +23,8 @@ export class MyBuilding extends CGFobject {
 
     this.centralHeight = this.centralFloors * this.floorHeight; // altura do bloco central numero de pisos * altura de cada piso
     this.centralDepth = 20; // valor da profundidade
+
+    // Initialize position
 
     const bricksTexture = new CGFtexture(scene, texturePath);
 
@@ -54,8 +57,76 @@ export class MyBuilding extends CGFobject {
     this.signAppearance.setSpecular(0, 0, 0, 1);
     this.signAppearance.setShininess(1.0);
 
+        
+    this.yellowSpheres = [];
+    this.emissiveMaterial = new CGFappearance(scene);
+    this.emissiveMaterial.setAmbient(0.1, 0.1, 0.0, 1.0);
+    this.emissiveMaterial.setDiffuse(0.4, 0.4, 0.0, 1.0);
+    this.emissiveMaterial.setSpecular(0.2, 0.2, 0.0, 1.0);
+    this.emissiveMaterial.setEmission(1.0, 1.0, 0.0, 1.0); // emissive yellow
+    this.emissiveMaterial.setShininess(10.0);
 
-  }
+    this.isDisplayYellowSpheres = true;
+    this.initYellowSpheres();
+    }
+
+    initYellowSpheres() {
+      const positions = [
+        [7,  24 , 7],
+        [7,  24 , -7],
+        [-7, 24, 7],
+        [-7, 24, -7]
+      ];
+    
+      for (let pos of positions) {
+        const sphere = new MySphere(this.scene, 20, 20, true , 0.3);
+        sphere.position = { x: pos[0], y: pos[1], z: pos[2] };
+        this.yellowSpheres.push(sphere);
+      }
+    
+      this.baseMaterial = new CGFappearance(this.scene);
+      this.baseMaterial.setAmbient(0.1, 0.1, 0.0, 1.0);
+      this.baseMaterial.setDiffuse(0.4, 0.4, 0.0, 1.0);
+      this.baseMaterial.setSpecular(0.2, 0.2, 0.0, 1.0);
+      this.baseMaterial.setEmission(0.0, 0.0, 0.0, 1.0);
+      this.baseMaterial.setShininess(10.0);
+    
+      this.dynamicEmissiveMaterial = new CGFappearance(this.scene);
+      this.dynamicEmissiveMaterial.setAmbient(0.1, 0.1, 0.0, 1.0);
+      this.dynamicEmissiveMaterial.setDiffuse(0.4, 0.4, 0.0, 1.0);
+      this.dynamicEmissiveMaterial.setSpecular(0.2, 0.2, 0.0, 1.0);
+      this.dynamicEmissiveMaterial.setShininess(10.0);
+    }
+    
+
+    displayYellowSpheres(timeFactor) {
+      // Se estiver em manobra, aplicar emissão variável
+      if (timeFactor !== undefined) {
+        let speed = 2.0; // controla a velocidade da pulsação
+        let emissionIntensity = Math.abs(Math.sin(speed * timeFactor));
+        console.log("TIME_FACTOR" ,   timeFactor);
+
+    
+        // Atualizar material emissivo dinamicamente
+        this.dynamicEmissiveMaterial.setEmission(
+          emissionIntensity, emissionIntensity, 0.0, 1.0);
+        this.dynamicEmissiveMaterial.apply();
+      } else {
+        this.baseMaterial.apply();
+      }
+    
+      
+      for (let sphere of this.yellowSpheres) {
+        this.scene.pushMatrix();
+        this.scene.translate(sphere.position.x, sphere.position.y, sphere.position.z);
+        this.dynamicEmissiveMaterial.apply();
+        sphere.display();
+        this.scene.popMatrix();
+      }
+      
+}
+    
+    
 
   getHeight(){
     return this.numFloors * this.floorHeight;
@@ -74,6 +145,11 @@ export class MyBuilding extends CGFobject {
   }
 
   display() {
+
+
+    if(this.isDisplayYellowSpheres)
+      this.displayYellowSpheres();
+
 
     //Desenho do bloco central
     this.appearance.apply();

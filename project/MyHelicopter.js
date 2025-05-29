@@ -55,16 +55,15 @@ export class MyHelicopter extends CGFobject {
     this.isOverLake = false;
     this.isOverFire = false;
 
-
-
     this.initBuffers();
-  }
+    }
+
+
 
   display() {
 
 
     this.scene.pushMatrix();
-
 
     this.scene.translate(this.position.x, this.position.y, this.position.z);
     this.scene.rotate(this.orientation, 0, 1, 0);
