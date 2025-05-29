@@ -104,7 +104,6 @@ export class MyBuilding extends CGFobject {
       if (timeFactor !== undefined) {
         let speed = 2.0; // controla a velocidade da pulsação
         let emissionIntensity = Math.abs(Math.sin(speed * timeFactor));
-        console.log("TIME_FACTOR" ,   timeFactor);
 
     
         // Atualizar material emissivo dinamicamente

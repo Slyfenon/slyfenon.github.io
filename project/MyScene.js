@@ -143,7 +143,7 @@ export class MyScene extends CGFscene {
       keyPressed = true;
     }
     if (this.gui.isKeyPressed("KeyS")) {
-      this.helicopter.accelerate(-5 * this.speedFactor);
+      this.helicopter.decelerate(5 * this.speedFactor);
       keyPressed = true;
     }
     if (this.gui.isKeyPressed("KeyA")) {
@@ -179,7 +179,7 @@ export class MyScene extends CGFscene {
     }
 
     if (!keyPressed) {
-      this.helicopter.accelerate(-5 * this.speedFactor);
+      this.helicopter.decelerate(5 * this.speedFactor);
     }
   }
   
