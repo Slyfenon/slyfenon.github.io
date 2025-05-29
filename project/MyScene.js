@@ -302,7 +302,7 @@ export class MyScene extends CGFscene {
     
     if (this.displayForest) {
       this.pushMatrix();
-      this.translate(25, 5, -125); // 2º quadrante plano xz
+      this.translate(25, 4, -125); // 2º quadrante plano xz
       this.forest.display();
       this.popMatrix();
   }
