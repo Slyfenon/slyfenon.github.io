@@ -8,6 +8,7 @@ import { MyLake } from "./MyLake.js";
 import { MyTree } from "./MyTree.js";
 import { MyForest } from './MyForest.js';
 import { MyFire } from './MyFire.js';
+import { MySphere } from "./MySphere.js";
 
 /**
  * MyScene
@@ -72,6 +73,8 @@ export class MyScene extends CGFscene {
 
     this.lake = new MyLake(this, this.waterTexture, this.heightMap);
 
+    this.sun = new MySphere(this, 30,30,true, 12 );
+
     this.speedFactor = 0.3;
     this.rotationSpeed = 0.06;
 
@@ -90,6 +93,7 @@ export class MyScene extends CGFscene {
     this.displayBuilding = true;
     this.displayForest = true;
     this.displayAxis = true;
+    this.displaySun = false;
 
   }
 
@@ -113,7 +117,7 @@ export class MyScene extends CGFscene {
   }
 
   initLights() {
-    this.lights[0].setPosition(200, 200, 200, 1);
+    this.lights[0].setPosition(0, 150, 0, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
@@ -139,7 +143,7 @@ export class MyScene extends CGFscene {
       keyPressed = true;
     }
     if (this.gui.isKeyPressed("KeyS")) {
-      this.helicopter.accelerate(-5 * this.speedFactor);
+      this.helicopter.decelerate(5 * this.speedFactor);
       keyPressed = true;
     }
     if (this.gui.isKeyPressed("KeyA")) {
@@ -175,7 +179,7 @@ export class MyScene extends CGFscene {
     }
 
     if (!keyPressed) {
-      this.helicopter.accelerate(-5 * this.speedFactor);
+      this.helicopter.decelerate(5 * this.speedFactor);
     }
   }
   
@@ -214,6 +218,13 @@ export class MyScene extends CGFscene {
     this.timeFactor = (t / 1000) % 1000;
     this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
 
+    if (this.helicopter.state === "rising" || this.helicopter.state === "landing") {
+      this.building.displayYellowSpheres(this.timeFactor); // Passa o tempo
+    } else {
+      this.building.displayYellowSpheres(); // Sem pulsação
+    }
+
+
     // Check if the helicopter is rising and alternate the building texture
     if (this.helicopter.state === "rising") {
       if (Math.floor(t / 1000) % 2 === 0) {
@@ -233,6 +244,16 @@ export class MyScene extends CGFscene {
 
     if( this.helicopter.state !== "rising" && this.helicopter.state !== "landing") {
       this.building.setHelipadTexture(this.helicenter);
+    }
+
+    // Limit the camera position to specific values
+    if (this.camera.position[0] > 200 || this.camera.position[0] < -200 ||
+      this.camera.position[1] > 150 || this.camera.position[1] < 10 ||
+      this.camera.position[2] > 200 || this.camera.position[2] < -200) {
+      const clampedX = Math.max(-200, Math.min(200, this.camera.position[0]));
+      const clampedY = Math.max(10, Math.min(150, this.camera.position[1]));
+      const clampedZ = Math.max(-200, Math.min(200, this.camera.position[2]));
+      this.camera.setPosition(vec3.fromValues(clampedX, clampedY, clampedZ));
     }
   }
 
@@ -266,6 +287,13 @@ export class MyScene extends CGFscene {
     this.loadIdentity();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
+
+    if(this.displaySun){
+      this.pushMatrix();
+      this.translate(this.lights[0].position[0], this.lights[0].position[1], this.lights[0].position[2]);
+      this.sun.display();
+      this.popMatrix();
+    }
 
     // Draw axis
     if(this.displayAxis){

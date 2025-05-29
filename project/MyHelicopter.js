@@ -55,16 +55,15 @@ export class MyHelicopter extends CGFobject {
     this.isOverLake = false;
     this.isOverFire = false;
 
-
-
     this.initBuffers();
-  }
+    }
+
+
 
   display() {
 
 
     this.scene.pushMatrix();
-
 
     this.scene.translate(this.position.x, this.position.y, this.position.z);
     this.scene.rotate(this.orientation, 0, 1, 0);
@@ -222,6 +221,10 @@ export class MyHelicopter extends CGFobject {
   update(deltaTime) {
     const dt = deltaTime / 1000;
 
+    console.log("TILT: ", this.tilt);
+    console.log("VELOCITY: ", this.velocity.x, this.velocity.z);
+
+
     this.isOverLake = (
       this.position.x > -50 && this.position.x < 10 &&
       this.position.z > 0 && this.position.z < 40
@@ -314,6 +317,9 @@ export class MyHelicopter extends CGFobject {
         
   
       case 'flying':
+        if(this.velocity.x === 0 && this.velocity.z  === 0){
+          this.tilt = 0;
+        }
         // movimentação ativa permitida
         this.position.x += this.velocity.x * dt;
         this.position.z += this.velocity.z * dt;
@@ -367,16 +373,36 @@ export class MyHelicopter extends CGFobject {
   }
 
   accelerate(v) {
-
     if (this.state === 'flying') {
       this.speed += v;
       this.speed = Math.min(Math.max(0, this.speed), this.maxSpeed);
       this.velocity.x = this.speed * Math.sin(this.orientation);
       this.velocity.z = this.speed * Math.cos(this.orientation);
-      this.tilt = 0.1 * v;
 
+      // Linearly interpolate tilt from 0 to 0.4 as speed increases
+      if (this.speed > 0) {
+        this.tilt = 0.4 * (this.speed / this.maxSpeed);
+      } else {
+        this.tilt = 0;
+      }
     }
   }
+  decelerate(v) {
+    if (this.state === 'flying') {
+      this.speed -= v;
+      this.speed = Math.max(0, this.speed);
+      this.velocity.x = this.speed * Math.sin(this.orientation);
+      this.velocity.z = this.speed * Math.cos(this.orientation);
+
+      // Vary tilt based on speed (tilt decreases as speed decreases)
+      if (this.speed > 0) {
+        this.tilt = 0.4 * (this.speed / this.maxSpeed);
+      } else {
+        this.tilt = 0;
+      }
+    }
+  }
+
 
   reset() {
     this.position = { x: -100, y: 26.25, z: -106 };
