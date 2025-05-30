@@ -1,6 +1,6 @@
 # CG 2024/2025
 
-## Group T0xG0y
+## Group T02G03
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Paulo Coutinho   | 202205692 | up202205692@up.pt  |
