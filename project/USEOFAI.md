@@ -1,5 +1,4 @@
-# Use of AI in Textures
-
+# Use of AI 
 ## Explicit Statement of AI Usage
 
 In this project, AI was explicitly used in the creation of textures. The following outlines the specific ways AI contributed:
