@@ -21,7 +21,6 @@
 | **Part 7 - Desenvolvimentos adicionais**<br>Um *height map* foi aplicado tanto ao terreno como à água, com o objetivo de simular irregularidades naturais e proporcionar um maior realismo visual ao ambiente. No caso do terreno, o *height map* permite criar relevos, como colinas e depressões, tornando a superfície menos plana e mais próxima do que se observa na natureza. Para a água, a utilização do *height map* resulta numa superfície ondulada, simulando o movimento das ondas e conferindo dinamismo ao cenário. | ![Screenshot 11](screenshots/project-t02g03-11.png) |
 
 ## Demonstração em Vídeo
+- Located in `/video`
 
-<video width="640" controls>
-  <source src="video/project-t02g03-video.mp4" type="video/mp4">
-</video>
+<video src="video/project-t02g03-video.mp4" width="600" height="450" controls></video>
