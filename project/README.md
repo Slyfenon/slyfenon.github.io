@@ -40,4 +40,8 @@ Na implementacao da classe **MyForest**, foi utilizado um desvio aleatório (off
 
 ### Part 5 - Water and Fire
 
+O fogo foi implementado com diferentes pirâmides com altura, rotação e cor variáveis. A classe **MyFire** inclui uma pirâmide central, rodeada por pirâmides com alturas decrescentes consoante a distância ao centro. <br>
+Tal como nas árvores, o fogo pode ou não usar textura. Quando não utiliza textura, apresenta pirâmides com diferentes tons de amarelo, laranja e vermelho. Quando usa textura, é aplicado um shader que simula uma animação da chama. Esta animação consiste num movimento geométrico, criado por funções sin e cos aplicadas aos vértices, que gere um efeito ondulante nas pirâmides. Além disso, há animação da textura, pois a textura da chama é deslocada ao longo do tempo, criando a ilusão de que está a arder mesmo sem alterar a geometria. Por último, é usado uma máscara de filtro para destacar certas zonas com cores mais brilhantes, acentuando visualmente partes da chama.<br>
+O fogo é gerado na classe **MyForest**, no ciclo de criação da matriz da floresta, surgindo aleatoriamente entre grupos de quatro árvores.
+
 ![Screenshot 6](screenshots/project-t02g03-6.png)
