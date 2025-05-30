@@ -218,6 +218,7 @@ export class MyBuilding extends CGFobject {
     this.helipad.display();
 
     this.scene.setActiveShader(this.scene.defaultShader); // Restore
+    this.scene.setDefaultAppearance(); // Restore default appearance
     this.scene.popMatrix();
 
 

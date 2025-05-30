@@ -143,9 +143,9 @@ export class MyFire extends CGFobject {
     if (this.useTexture) {
       this.scene.setActiveShader(this.shader);
       this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
-      this.appearance.texture.bind();
+      this.appearance.texture.bind(0);
       this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
-      this.filterTexture.bind();
+      this.filterTexture.bind(1);
 
       this.shader.setUniformsValues({
         uSampler: 0,
