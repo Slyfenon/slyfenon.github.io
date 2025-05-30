@@ -24,4 +24,4 @@
 
 - Located in `/video`
 
-<video src="video/project-t02g03-video.mp4"width="600" height="450" controls></video>
+<video src="video/project-t02g03-video.mp4" width="600" height="450" controls></video>
