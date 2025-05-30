@@ -2,10 +2,10 @@
 
 ## Group T02G03
 
-| Group Member | Contribution |
-| --- | --- |
-| Paulo Coutinho  | 50% |
-| Nuno Saavedra Machado | 50% |
+| Group Member            | Student Number | Contribution |
+|-------------------------|---------------|--------------|
+| Paulo Coutinho          |202205692      | 50%          |
+| Nuno Saavedra Machado   |202206186      | 50%          |
 
 ## Project Notes
 
