@@ -13,7 +13,7 @@ void main() {
 
     vTextureCoord = aTextureCoord;
 
-    float amp = 0.08;
+    float amp = 0.3;
 	float wave = sin(aVertexPosition.y * 40.0 - timeFactor * 10.0 + flameOffset);
 	float wave2 = cos(aVertexPosition.y * 50.0 - timeFactor * 8.0 + flameOffset);
 
