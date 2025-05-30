@@ -187,28 +187,18 @@ export class MyScene extends CGFscene {
   update(t) {
     const deltaTime = t - this.lastUpdateTime;
     this.lastUpdateTime = t;
-  
-    if (t - this.lastCounterUpdate > 1000) { 
-      if (this.forest.fires.size === 0 && this.counter > 0) {
-        const counterElement = document.getElementById('counter');
-        if (counterElement) {
-          counterElement.innerText = `YOU WIN`;
+    const counterElement = document.getElementById('counter');
+    if (counterElement) {
+      const keys = ["KeyW", "KeyA", "KeyS", "KeyD", "KeyR", "KeyO", "KeyL", "KeyP", "KeyC"];
+      let pressedKey = null;
+      for (const key of keys) {
+        if (this.gui.isKeyPressed(key)) {
+          pressedKey = key.replace("Key", "");
+          break;
         }
       }
-      else {
-        this.counter--;
-        this.lastCounterUpdate = t;
-  
-        const counterElement = document.getElementById('counter');
-        if (counterElement) {
-          counterElement.innerText = `Counter: ${this.counter}`;
-        }
-
-        if (this.counter <= 0) {
-          counterElement.innerText = `GAME OVER`;
-          this.counter = 0;
-        }
-      }
+      if (pressedKey)
+        counterElement.innerText = `Key pressed: ${pressedKey}`;
     }
   
     this.checkKeys();
