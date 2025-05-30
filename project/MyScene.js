@@ -95,6 +95,11 @@ export class MyScene extends CGFscene {
     this.displayAxis = true;
     this.displaySun = false;
 
+
+    this.blendSpeed = 1; // quanto mais alto, mais rápida a transição
+    this.blend = 0;
+
+
   }
 
   /**
@@ -106,6 +111,7 @@ export class MyScene extends CGFscene {
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
     this.helicopterTexture = new CGFtexture(this, "./textures/helicopter.jpg");
     this.helicenter = new CGFtexture(this, "./textures/helipad.png");
+    this.dynamicTexture = new CGFtexture(this, "./textures/helipad.png");
     this.helicenterUPTexture = new CGFtexture(this, "./textures/upHelicenter.png");
     this.helicenterDownTexture = new CGFtexture(this, "./textures/downHelicenter.png");
     this.heightMap = new CGFtexture(this, "./textures/heightMap4.jpg");
@@ -237,27 +243,18 @@ export class MyScene extends CGFscene {
       this.building.displayYellowSpheres(); // Sem pulsação
     }
 
-
-    // Check if the helicopter is rising and alternate the building texture
     if (this.helicopter.state === "rising") {
-      if (Math.floor(t / 1000) % 2 === 0) {
-        this.building.setHelipadTexture(this.helicenterUPTexture);
-      } else {
-        this.building.setHelipadTexture(this.helicenter);
-      }
+      this.building.setDynamicTexture(this.helicenterUPTexture);
+      this.blend = 0.5 + 0.5 * Math.sin(t / 1000 * this.blendSpeed * Math.PI);
+    } else if (this.helicopter.state === "landing") {
+      this.building.setDynamicTexture(this.helicenterDownTexture);
+      this.blend = 0.5 + 0.5 * Math.sin(t / 1000 * this.blendSpeed * Math.PI);
+    } else {
+      this.blend = 0.0;
     }
 
-    if (this.helicopter.state === "landing") {
-      if (Math.floor(t / 1000) % 2 === 0) {
-        this.building.setHelipadTexture(this.helicenterDownTexture);
-      } else {
-        this.building.setHelipadTexture(this.helicenter);
-      }
-    }
+    this.building.setBlendFactor(this.blend);
 
-    if (this.helicopter.state !== "rising" && this.helicopter.state !== "landing") {
-      this.building.setHelipadTexture(this.helicenter);
-    }
 
     // Limit the camera position to specific values
     if (this.camera.position[0] > 200 || this.camera.position[0] < -200 ||
@@ -310,7 +307,7 @@ export class MyScene extends CGFscene {
 
   /**
    * Displays all objects in the scene.
-   */ 
+   */
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene

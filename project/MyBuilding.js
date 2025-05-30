@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance, CGFtexture } from "../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFtexture, CGFshader } from "../lib/CGF.js";
 import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
@@ -28,6 +28,12 @@ export class MyBuilding extends CGFobject {
 
     const bricksTexture = new CGFtexture(scene, texturePath);
 
+    this.helipadShader = new CGFshader(this.scene.gl, "shaders/helipad.vert", "shaders/helipad.frag");
+    this.helipadShader.setUniformsValues({
+      blendFactor: 0.0
+    });
+
+
     this.appearance = new CGFappearance(scene);
     this.appearance.setTexture(bricksTexture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
@@ -38,7 +44,7 @@ export class MyBuilding extends CGFobject {
 
     this.cube = new MyUnitCubeQuad(scene, bricksTexture, bricksTexture, bricksTexture, bricksTexture, bricksTexture, bricksTexture);
 
-    this.setHelipadTexture(this.scene.helicenter);
+    //this.setHelipadTexture(this.scene.helicenter);
 
     this.doorAppearance = new CGFappearance(scene);
     this.doorAppearance.setTexture(new CGFtexture(scene, "textures/door.png"));
@@ -164,6 +170,25 @@ export class MyBuilding extends CGFobject {
   }
 
   /**
+   * Sets a dynamic texture for the building.
+   * This method updates the dynamic texture used for the helipad.
+   * @param {*} texture - The texture to be set as the dynamic texture.
+   */
+  setDynamicTexture(texture) {
+    this.scene.dynamicTexture = texture;
+  }
+
+  /**
+   * Sets the blend factor for the helipad shader.
+   * This method updates the blend factor used in the helipad shader to control the blending effect.
+   * @param {number} factor - The blend factor to be set.
+   */
+  setBlendFactor(factor) {
+    this.currentBlendFactor = factor;
+  }
+
+
+  /**
    * Displays the building.
    * This method draws the central block, side blocks, door, sign, helipad, and windows.
    * It also displays the yellow spheres if they are enabled.
@@ -173,6 +198,30 @@ export class MyBuilding extends CGFobject {
 
     if (this.isDisplayYellowSpheres)
       this.displayYellowSpheres();
+
+    //Helipad
+    this.scene.pushMatrix();
+    this.scene.translate(0, this.centralHeight + 0.1, 0);
+    this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+    this.scene.scale(this.moduleWidth * 0.7, this.centralDepth * 0.7, 1);
+    this.scene.setActiveShader(this.helipadShader);
+
+    this.scene.helicenter.bind(0); // Texture H
+    this.scene.dynamicTexture.bind(1); // Texture UP or DOWN
+
+    this.helipadShader.setUniformsValues({
+      uTexture1: 0,
+      uTexture2: 1,
+      blendFactor: this.currentBlendFactor
+    });
+
+    this.helipad.display();
+
+    this.scene.setActiveShader(this.scene.defaultShader); // Restore
+    this.scene.popMatrix();
+
+
+
 
 
     //Desenho do bloco central
@@ -220,14 +269,7 @@ export class MyBuilding extends CGFobject {
     this.sign.display();
     this.scene.popMatrix();
 
-    //Helipad
-    this.scene.pushMatrix();
-    this.helipadAppearance.apply();
-    this.scene.translate(0, this.centralHeight + 0.1, 0);
-    this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-    this.scene.scale(this.moduleWidth * 0.7, this.centralDepth * 0.7, 1);
-    this.helipad.display();
-    this.scene.popMatrix();
+
 
     //Tamanho das janelas
     const windowWidth = 3;
