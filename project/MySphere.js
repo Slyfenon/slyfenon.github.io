@@ -20,6 +20,10 @@ export class MySphere extends CGFobject {
     this.initBuffers();
   }
 
+  /**
+   * Initializes the buffers for the sphere.
+   * Creates vertices, normals, texture coordinates, and indices for the sphere.
+   */
   initBuffers() {
     this.vertices = [];
     this.indices = [];

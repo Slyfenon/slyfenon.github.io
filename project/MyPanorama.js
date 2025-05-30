@@ -1,4 +1,4 @@
-import {CGFappearance, CGFobject} from '../lib/CGF.js';
+import { CGFappearance, CGFobject } from '../lib/CGF.js';
 import { MySphere } from './MySphere.js';
 
 export class MyPanorama extends CGFobject {
@@ -11,10 +11,14 @@ export class MyPanorama extends CGFobject {
     this.initBuffers();
   }
 
+  /**
+   * Initializes the buffers for the panorama.
+   * Sets up the sphere to be displayed as a panoramic background.
+   */
   display() {
     this.scene.pushMatrix();
-    this.scene.translate(this.scene.camera.position[0], this.scene.camera.position[1], this.scene.camera.position[2]) 
-    this.scene.scale(1,-1,1);
+    this.scene.translate(this.scene.camera.position[0], this.scene.camera.position[1], this.scene.camera.position[2])
+    this.scene.scale(1, -1, 1);
     this.material.apply();
     this.sphere.display();
     this.scene.popMatrix();

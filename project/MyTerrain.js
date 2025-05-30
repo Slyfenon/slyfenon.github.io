@@ -1,4 +1,4 @@
-import {CGFappearance, CGFobject, CGFshader, CGFtexture} from '../lib/CGF.js';
+import { CGFappearance, CGFobject, CGFshader, CGFtexture } from '../lib/CGF.js';
 import { MyPlane } from './MyPlane.js';
 /**
 * MyPlane
@@ -11,9 +11,9 @@ import { MyPlane } from './MyPlane.js';
  * @param maxT - maximum texture coordinate in T
 */
 export class MyTerrain extends CGFobject {
-	constructor(scene, texturePath, heigthMapTexture) {
-		super(scene);
-		this.plane = new MyPlane(this.scene, 64);
+  constructor(scene, texturePath, heigthMapTexture) {
+    super(scene);
+    this.plane = new MyPlane(this.scene, 64);
 
     this.planeMaterial = new CGFappearance(this.scene);
     this.planeTexture = new CGFtexture(this.scene, texturePath);
@@ -24,28 +24,28 @@ export class MyTerrain extends CGFobject {
     this.terrainShader = new CGFshader(this.scene.gl, "./shaders/plane.vert", "./shaders/plane.frag");
 
     this.terrainShader.setUniformsValues({
-      uScaleFactor: 35.0 ,
+      uScaleFactor: 35.0,
       uSampler2: 1
     });
-    
-		this.initBuffers();
-	}
+
+    this.initBuffers();
+  }
 
   display() {
     this.scene.pushMatrix();
     this.scene.scale(400, 1, 400);
     this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-  
+
     this.scene.setActiveShader(this.terrainShader);
-  
-    this.planeTexture.bind(0);     
-    this.heigthMapTexture.bind(1);        
-  
+
+    this.planeTexture.bind(0);
+    this.heigthMapTexture.bind(1);
+
     this.plane.display();
     this.scene.setActiveShader(this.scene.defaultShader);
     this.scene.popMatrix();
   }
-  
+
 
 }
 

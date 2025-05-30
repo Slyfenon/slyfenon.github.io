@@ -73,7 +73,7 @@ export class MyScene extends CGFscene {
 
     this.lake = new MyLake(this, this.waterTexture, this.heightMap);
 
-    this.sun = new MySphere(this, 30,30,true, 12 );
+    this.sun = new MySphere(this, 30, 30, true, 12);
 
     this.speedFactor = 0.3;
     this.rotationSpeed = 0.06;
@@ -97,6 +97,10 @@ export class MyScene extends CGFscene {
 
   }
 
+  /**
+   * Initializes the textures used in the scene.
+   * Sets up the textures for the plane, panorama, helicopter, helipad, height map, and water.
+   */
   initTextures() {
     this.planeTexture = new CGFtexture(this, "./textures/grass.png");
     this.panoramaTexture = new CGFtexture(this, "./textures/panorama2.jpg");
@@ -116,12 +120,20 @@ export class MyScene extends CGFscene {
     this.bodyAppearance.setShininess(10);
   }
 
+  /**
+   * Initializes the lights in the scene.
+   * Sets the position, diffuse color, and enables the first light.
+    */
   initLights() {
     this.lights[0].setPosition(0, 150, 0, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
   }
+  /**
+   * Initializes the camera for the scene.
+   * Sets the camera's field of view, near and far planes, and initial position and target.
+   */
   initCameras() {
     this.camera = new CGFcamera(
       90,
@@ -132,7 +144,12 @@ export class MyScene extends CGFscene {
     );
   }
 
-  
+
+  /**
+   * Checks for key presses and updates the helicopter's state accordingly.
+   * Handles acceleration, deceleration, turning, resetting the helicopter,
+   * and camera position adjustments based on key inputs.
+   */
   checkKeys() {
 
 
@@ -162,28 +179,35 @@ export class MyScene extends CGFscene {
       this.helicopter.handleKeyPress("O");
       keyPressed = true;
     }
-  
+
     if (this.gui.isKeyPressed("KeyL")) {
       this.helicopter.handleKeyPress("L");
       keyPressed = true;
     }
-  
+
     if (this.gui.isKeyPressed("KeyP")) {
       this.helicopter.handleKeyPress("P");
       keyPressed = true;
     }
 
-    if(this.gui.isKeyPressed("KeyC")){
+    if (this.gui.isKeyPressed("KeyC")) {
       this.camera.setPosition(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y + 40, this.helicopter.position.z + 40));
-      this.camera.setTarget(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y, this.helicopter.position.z)); 
+      this.camera.setTarget(vec3.fromValues(this.helicopter.position.x, this.helicopter.position.y, this.helicopter.position.z));
     }
 
     if (!keyPressed) {
       this.helicopter.decelerate(5 * this.speedFactor);
     }
   }
-  
 
+
+  /**
+   * Updates the scene based on the elapsed time.
+   * Calculates the time delta since the last update, checks for key presses,
+   * updates the helicopter and lake, and manages the building's texture and yellow spheres.
+   * Also limits the camera position to specific values.
+   * @param {number} t - The current time in milliseconds.
+   */
   update(t) {
     const deltaTime = t - this.lastUpdateTime;
     this.lastUpdateTime = t;
@@ -200,11 +224,11 @@ export class MyScene extends CGFscene {
       if (pressedKey)
         counterElement.innerText = `Key pressed: ${pressedKey}`;
     }
-  
+
     this.checkKeys();
     this.helicopter.update(deltaTime);
     this.lake.update(deltaTime);
-  
+
     this.timeFactor = (t / 1000) % 1000;
 
     if (this.helicopter.state === "rising" || this.helicopter.state === "landing") {
@@ -231,7 +255,7 @@ export class MyScene extends CGFscene {
       }
     }
 
-    if( this.helicopter.state !== "rising" && this.helicopter.state !== "landing") {
+    if (this.helicopter.state !== "rising" && this.helicopter.state !== "landing") {
       this.building.setHelipadTexture(this.helicenter);
     }
 
@@ -247,6 +271,10 @@ export class MyScene extends CGFscene {
   }
 
 
+  /**
+   * Sets the default appearance for the scene.
+   * Applies ambient, diffuse, and specular colors, and sets the shininess.
+   */
   setDefaultAppearance() {
     this.setAmbient(0.5, 0.5, 0.5, 1.0);
     this.setDiffuse(0.5, 0.5, 0.5, 1.0);
@@ -254,18 +282,35 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
 
+  /**
+   * Updates the building's texture based on the selected texture.
+   * Creates a new MyBuilding instance with the selected texture.
+   */
   updateBuildingTexture() {
     this.building = new MyBuilding(this, 60, 3, 2, this.window, this.selectedBuildingTexture);
   }
 
-  updateTerrainTexture(){
+  /**
+   * Updates the terrain texture based on the selected texture.
+   * Creates a new MyTerrain instance with the selected texture and height map.
+   */
+  updateTerrainTexture() {
     this.terrain = new MyTerrain(this, this.selectedTerrainTexture, this.heightMap);
   }
+
+  /**
+   * Updates the season of the forest.
+   * Changes the crown texture based on the current season.
+   * Creates a new MyForest instance with the updated crown texture.
+   */
   updateForestSeason() {
     const crownTexturePath = this.season === "Fall" ? "textures/yellow_leaves.jpg" : "textures/green_leaves.jpg";
     this.forest = new MyForest(this, this.forest.rows, this.forest.cols, crownTexturePath);
   }
 
+  /**
+   * Displays all objects in the scene.
+   */ 
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -277,7 +322,7 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
-    if(this.displaySun){
+    if (this.displaySun) {
       this.pushMatrix();
       this.translate(this.lights[0].position[0], this.lights[0].position[1], this.lights[0].position[2]);
       this.sun.display();
@@ -285,9 +330,9 @@ export class MyScene extends CGFscene {
     }
 
     // Draw axis
-    if(this.displayAxis){
+    if (this.displayAxis) {
       this.pushMatrix();
-      this.translate(0,-20, 0);
+      this.translate(0, -20, 0);
       this.axis.display();
       this.popMatrix();
     }
@@ -316,13 +361,13 @@ export class MyScene extends CGFscene {
       this.building.display();
       this.popMatrix();
     }
-    
+
     if (this.displayForest) {
       this.pushMatrix();
       this.translate(25, 4, -125); // 2º quadrante plano xz
       this.forest.display();
       this.popMatrix();
-  }
+    }
 
   }
 }

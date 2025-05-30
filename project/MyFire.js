@@ -13,7 +13,7 @@ export class MyFire extends CGFobject {
     this.positions = []; // posicao e altura de cada piramide
     this.rotations = []; // rotacao de cada piramide 
     this.appearances = []; // aparencia de cada piramide sem textura
-    this.useTexture = Math.random() < 0.6; 
+    this.useTexture = Math.random() < 0.6;
     this.sharedPyramid = new MyPyramid(scene, 3, 1, false);
 
     if (this.useTexture) {
@@ -24,10 +24,16 @@ export class MyFire extends CGFobject {
     this.generateRings();
   }
 
+  /**
+   * Initializes the shader and textures for the fire effect.
+   * Sets up the shader with the fire texture and filter texture.
+   * Sets the texture wrap mode to REPEAT for both textures.
+   * Initializes the shader uniforms for time factor.
+   */
   initShaderAndTextures() {
     this.shader = new CGFshader(this.scene.gl, "shaders/fire.vert", "shaders/fire.frag");
     this.shader.setUniformsValues({ uSampler2: 1, timeFactor: 0 });
-    
+
     this.appearance = new CGFappearance(this.scene);
 
     this.texture = new CGFtexture(this.scene, "textures/resized_fogo.jpg");
@@ -37,6 +43,11 @@ export class MyFire extends CGFobject {
     this.filterTexture = new CGFtexture(this.scene, "textures/resized_filter.png");
   }
 
+  /**
+   * Generates the center flame of the fire.
+   * Adds a flame at the center position with maximum height.
+   * Sets the appearance of the center flame to a bright yellow color.
+   */
   generateCenterFlame() {
     this.positions.push({ x: 0, z: 0, height: this.maxHeight });
     this.rotations.push(Math.random() * 2 * Math.PI);
@@ -49,12 +60,16 @@ export class MyFire extends CGFobject {
     this.appearances.push(centerApp);
   }
 
+  /**
+   * Generates the rings of flames around the center flame.
+   * Creates 2 to 3 rings of flames, each with 2 to 3 flames.
+   */
   generateRings() {
     // Anéis à volta
     const numRings = 2 + Math.floor(Math.random() * 2); // 2 a 3 aneis
     const maxAllowedHeight = this.maxHeight * 0.95;
 
-    for (let ring = 1; ring <= numRings; ring++) {  
+    for (let ring = 1; ring <= numRings; ring++) {
       const ringSpacing = this.fireRadius / (numRings + 0.5);
       const radius = ring * ringSpacing;
       const flamesThisRing = 2 + Math.floor(Math.random() * 2); // 2 a 3 por anel
@@ -74,6 +89,13 @@ export class MyFire extends CGFobject {
     }
   }
 
+  /**
+   * Calculates the height of a flame based on its distance from the center.
+   * The height decreases as the distance from the center increases, with a random factor applied.
+   * @param {number} offsetRadius - The distance of the flame from the center.
+   * @param {number} maxAllowedHeight - The maximum height allowed for the flame.
+   * @returns {number} - The calculated height of the flame.
+   */
   calculateHeight(offsetRadius, maxAllowedHeight) {
     const falloff = Math.pow(offsetRadius / this.fireRadius, 1.5);
     const baseHeight = this.maxHeight * (1 - falloff) + this.minHeight;
@@ -81,6 +103,12 @@ export class MyFire extends CGFobject {
     return Math.min(baseHeight * randomFactor, maxAllowedHeight);
   }
 
+  /**
+   * Creates the appearance of a flame based on its ring ratio.
+   * The color of the flame varies based on its position in the ring.
+   * @param {*} ringRatio 
+   * @returns 
+   */
   createFlameAppearance(ringRatio) {
     let r, g, b;
     if (ringRatio < 0.34) {
@@ -107,6 +135,9 @@ export class MyFire extends CGFobject {
     return app;
   }
 
+  /**
+   * Displays the fire effect.
+   */
   display() {
 
     if (this.useTexture) {
@@ -143,6 +174,6 @@ export class MyFire extends CGFobject {
     }
 
     this.scene.setActiveShader(this.scene.defaultShader);
-}
+  }
 
 }

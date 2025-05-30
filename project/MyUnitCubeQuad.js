@@ -1,4 +1,4 @@
-import {CGFobject, CGFappearance} from '../lib/CGF.js';
+import { CGFobject, CGFappearance } from '../lib/CGF.js';
 import { MyQuad } from "./MyQuad.js";
 
 /**
@@ -33,13 +33,17 @@ export class MyUnitCubeQuad extends CGFobject {
 
         //just to see better
         for (let key in this.materials) {
-            this.materials[key].setAmbient(0.4, 0.4, 0.4, 1.0);  
+            this.materials[key].setAmbient(0.4, 0.4, 0.4, 1.0);
             this.materials[key].setDiffuse(1.0, 1.0, 1.0, 1.0);
             this.materials[key].setShininess(10.0);
         }
 
     }
-    
+
+    /**
+     * Displays the cube with different textures on each face.
+     * Each face is displayed using a quad with the corresponding texture applied.
+     */
     display() {
 
         // Top face

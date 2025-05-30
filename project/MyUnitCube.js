@@ -1,4 +1,4 @@
-import {CGFobject} from '../lib/CGF.js';
+import { CGFobject } from '../lib/CGF.js';
 /**
  * MyUnitCube
  * @constructor
@@ -9,7 +9,11 @@ export class MyUnitCube extends CGFobject {
         super(scene);
         this.initBuffers();
     }
-    
+
+    /**
+     * Initializes the buffers for the cube.
+     * Creates vertices, normals, and indices for the cube.
+     */
     initBuffers() {
         this.vertices = [
             // Front face
@@ -89,7 +93,7 @@ export class MyUnitCube extends CGFobject {
             // Left face
             1, 5, 2,
             2, 5, 6
-            
+
         ];
 
 

@@ -8,6 +8,9 @@ export class MyBucket extends CGFobject {
     this.body = new MyCylinder(scene, 20, 20, 1, 2);
   }
 
+  /**
+   * Initializes the bucket's appearance.
+   */
   display() {
     this.scene.pushMatrix();
     this.scene.scale(1, 1.5, 1);

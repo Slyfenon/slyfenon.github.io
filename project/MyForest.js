@@ -22,21 +22,21 @@ export class MyForest extends CGFobject {
                 let crownColor;
 
                 if (scene.season === "Fall") {
-                    crownColor = [0.6 + Math.random() * 0.4, 0.3 + Math.random() * 0.4, Math.random() * 0.2] ;
-                } else {                   
+                    crownColor = [0.6 + Math.random() * 0.4, 0.3 + Math.random() * 0.4, Math.random() * 0.2];
+                } else {
                     crownColor = [Math.random() * 0.3, 0.4 + Math.random() * 0.5, Math.random() * 0.3];
                 }
 
                 const offsetX = (Math.random() - 0.5) * 10;
-                const offsetZ = (Math.random() - 0.5) * 10; 
+                const offsetZ = (Math.random() - 0.5) * 10;
 
-                const useTexture = Math.random() < 0.5; 
+                const useTexture = Math.random() < 0.5;
 
                 this.trees[i][j] = {
                     tree: new MyTree(scene, randomTilt, tiltAxis, randomRadius, randomHeight, crownColor, useTexture, crownTexturePath),
                     offsetX: offsetX,
                     offsetZ: offsetZ
-                  };
+                };
                 const spacing = 15;
 
                 if (i > 0 && j > 0 && Math.random() < 0.5) {
@@ -49,6 +49,11 @@ export class MyForest extends CGFobject {
         }
     }
 
+    /**
+     * Displays the forest.
+     * Iterates through the rows and columns of trees, translating each tree to its position.
+     * Also displays fires at random positions within the forest.
+     */
     display() {
         const spacing = 15;
 

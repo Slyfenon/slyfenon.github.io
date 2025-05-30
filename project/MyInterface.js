@@ -33,17 +33,17 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayForest').name('Display Forest');
 
         this.gui.add(this.scene, 'selectedBuildingTexture', this.scene.buildingTextureList)
-        .name('Building Texture')
-        .onChange(() => this.scene.updateBuildingTexture());
+            .name('Building Texture')
+            .onChange(() => this.scene.updateBuildingTexture());
 
         this.gui.add(this.scene, 'selectedTerrainTexture', this.scene.terrainTextureList)
-        .name('Terrain Texture')
-        .onChange(() => this.scene.updateTerrainTexture());
+            .name('Terrain Texture')
+            .onChange(() => this.scene.updateTerrainTexture());
 
         this.gui.add(this.scene, 'season', ["Summer", "Fall", "Winter"]).name("Season").onChange(() => {
             this.scene.updateForestSeason();
         });
-        
+
         return true;
     }
 

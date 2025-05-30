@@ -53,13 +53,15 @@ export class MyHelicopter extends CGFobject {
     this.bucketFillLevel = 0;
     this.filling = false;
     this.isOverLake = false;
-    this.isOverFire = false;
 
     this.initBuffers();
-    }
+  }
 
 
 
+  /**
+   * Displays the helicopter model.
+   */
   display() {
 
 
@@ -109,15 +111,15 @@ export class MyHelicopter extends CGFobject {
 
     this.scene.pushMatrix();
     this.scene.translate(3, 6, 6);
-    this.scene.rotate(Math.PI, 1, 0, 0); 
-    this.scene.scale(0.6, 7.7, 0.4); 
+    this.scene.rotate(Math.PI, 1, 0, 0);
+    this.scene.scale(0.6, 7.7, 0.4);
     this.skids3.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
     this.scene.translate(-3, 6, 6);
-    this.scene.rotate(Math.PI, 1, 0, 0); 
-    this.scene.scale(0.6, 7.7, 0.4); 
+    this.scene.rotate(Math.PI, 1, 0, 0);
+    this.scene.scale(0.6, 7.7, 0.4);
     this.skids4.display();
     this.scene.popMatrix();
 
@@ -132,25 +134,25 @@ export class MyHelicopter extends CGFobject {
 
     // Top Rotor
     this.scene.pushMatrix();
-    this.scene.translate(0, 16.75, 6); 
-    this.scene.rotate(this.topRotorAngle, 0, 1, 0); 
-    this.scene.scale(18, 0.3, 0.8); 
+    this.scene.translate(0, 16.75, 6);
+    this.scene.rotate(this.topRotorAngle, 0, 1, 0);
+    this.scene.scale(18, 0.3, 0.8);
     this.topRotor.display();
     this.scene.popMatrix();
 
     // Cross Top Rotor
     this.scene.pushMatrix();
-    this.scene.translate(0, 16.75, 6); 
-    this.scene.rotate(this.topRotorAngle + Math.PI / 2, 0, 1, 0); 
-    this.scene.scale(18, 0.3, 0.8); 
+    this.scene.translate(0, 16.75, 6);
+    this.scene.rotate(this.topRotorAngle + Math.PI / 2, 0, 1, 0);
+    this.scene.scale(18, 0.3, 0.8);
     this.topRotor.display();
     this.scene.popMatrix();
 
     //Side Rotor
     this.scene.pushMatrix();
-    this.scene.translate(0, 10, -7.5); 
-    this.scene.rotate(this.sideRotorAngle, 1, 0, 0); 
-    this.scene.scale(0.3, 8, 0.8); 
+    this.scene.translate(0, 10, -7.5);
+    this.scene.rotate(this.sideRotorAngle, 1, 0, 0);
+    this.scene.scale(0.3, 8, 0.8);
     this.sideRotor.display();
     this.scene.popMatrix();
 
@@ -165,52 +167,52 @@ export class MyHelicopter extends CGFobject {
       this.cylinder.display();
       this.scene.popMatrix();
 
-        // Bucket
+      // Bucket
+      this.scene.pushMatrix();
+      this.scene.translate(0, -5, 5);
+      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+      this.bucket.display();
+      this.scene.popMatrix();
+
+      this.scene.pushMatrix();
+      this.scene.translate(0, -5, 5);
+      this.scene.rotate(-Math.PI / 2, 1, 0, 0);
+      this.scene.scale(1.1, 1.5, 1);
+      this.bucketCap.display();
+      this.scene.popMatrix();
+
+      if (this.bucketFillLevel > 0) {
         this.scene.pushMatrix();
         this.scene.translate(0, -5, 5);
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-        this.bucket.display();
-        this.scene.popMatrix();
 
+        // Water appearance
+        const waterAppearance = new CGFappearance(this.scene);
+        waterAppearance.setAmbient(0, 0, 0.2, 1);
+        waterAppearance.setDiffuse(0.1, 0.3, 0.8, 0.7);
+        waterAppearance.setSpecular(0.6, 0.8, 1, 1);
+        waterAppearance.setShininess(120);
+        waterAppearance.apply();
+
+        // Water fill cylinder
         this.scene.pushMatrix();
-        this.scene.translate(0, -5, 5);
-        this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-        this.scene.scale(1.1, 1.5, 1); 
-        this.bucketCap.display();
+        this.scene.translate(0, 0, 0.01);
+        this.scene.scale(1.0, 1.4, this.bucketFillLevel);
+        const waterColumn = new MyCylinder(this.scene, 20, 1);
+        waterColumn.display();
         this.scene.popMatrix();
 
-          if (this.bucketFillLevel > 0) {
-            this.scene.pushMatrix();
-            this.scene.translate(0, -5, 5); 
-            this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-          
-            // Water appearance
-            const waterAppearance = new CGFappearance(this.scene);
-            waterAppearance.setAmbient(0, 0, 0.2, 1);
-            waterAppearance.setDiffuse(0.1, 0.3, 0.8, 0.7);
-            waterAppearance.setSpecular(0.6, 0.8, 1, 1);
-            waterAppearance.setShininess(120);
-            waterAppearance.apply();
-          
-            // Water fill cylinder
-            this.scene.pushMatrix();
-            this.scene.translate(0, 0, 0.01); 
-            this.scene.scale(1.0, 1.4, this.bucketFillLevel); 
-            const waterColumn = new MyCylinder(this.scene, 20, 1); 
-            waterColumn.display();
-            this.scene.popMatrix();
+        // Water top cap
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, this.bucketFillLevel);
+        this.scene.scale(1.0, 1.4, 1);
+        const waterTopCap = new MyCircle(this.scene, 20);
+        waterTopCap.display();
+        this.scene.popMatrix();
 
-            // Water top cap
-            this.scene.pushMatrix();
-            this.scene.translate(0, 0, this.bucketFillLevel); 
-            this.scene.scale(1.0, 1.4, 1); 
-            const waterTopCap = new MyCircle(this.scene, 20); 
-            waterTopCap.display();
-            this.scene.popMatrix();
+        this.scene.popMatrix();
+      }
 
-            this.scene.popMatrix();
-          }
-          
 
     }
 
@@ -218,6 +220,15 @@ export class MyHelicopter extends CGFobject {
 
   }
 
+  /**
+   * Updates the helicopter's position and state based on the elapsed time.
+   * Handles different states such as taking off, flying, filling the bucket, and landing.
+   * Updates the camera position and target based on the helicopter's state.
+   * Checks if the helicopter is the lake.
+   * 
+   * 
+   * @param {*} deltaTime 
+   */
   update(deltaTime) {
     const dt = deltaTime / 1000;
 
@@ -229,20 +240,13 @@ export class MyHelicopter extends CGFobject {
       this.position.x > -50 && this.position.x < 10 &&
       this.position.z > 0 && this.position.z < 40
     );
-    this.isOverFire = (
-      this.position.x > 90 && this.position.x < 110 &&
-      this.position.z > -120 && this.position.z < -90
-    );
 
     console.log(this.state);
     console.log(`Position: x=${this.position.x}, y=${this.position.y}, z=${this.position.z}`);
-    if(this.isOverLake){
+    if (this.isOverLake) {
       console.log("WATER");
     }
-    if(this.isOverFire){
-      console.log("FIRE");
-    }
-  
+
     switch (this.state) {
       case 'taking_off':
         this.velocity = { x: 0, y: 10, z: 0 };
@@ -253,42 +257,42 @@ export class MyHelicopter extends CGFobject {
           this.state = 'flying';
         }
         break;
-  
+
       case 'lowering':
         this.velocity = { x: 0, y: -8, z: 0 };
-        this.position.y += this.velocity.y * dt;        
+        this.position.y += this.velocity.y * dt;
         if (this.position.y <= 18) {
           this.position.y = 18;
           this.state = 'filling';
           this.bucketFillLevel = 0;
         }
         break;
-  
-        case 'filling':
-          this.scene.camera.setPosition(vec3.fromValues(
-            this.position.x,
-            this.position.y + 3,    
-            this.position.z + 2     
-          ));
-          this.scene.camera.setTarget(vec3.fromValues(
-            this.position.x,
-            this.position.y - 5,   
-            this.position.z + 5    
-          ));
-        
-          this.bucketFillLevel += dt;
-          if (this.bucketFillLevel >= 1.4) {
-            this.bucketFillLevel = 1.4;
-            this.bucketFilled = true;
-            this.state = 'filled';
-            this.scene.camera.setPosition(vec3.fromValues(this.position.x, this.position.y + 40, this.position.z + 40));
-            this.scene.camera.setTarget(vec3.fromValues(this.position.x, this.position.y, this.position.z)); 
-          }
-          break;
-  
+
+      case 'filling':
+        this.scene.camera.setPosition(vec3.fromValues(
+          this.position.x,
+          this.position.y + 3,
+          this.position.z + 2
+        ));
+        this.scene.camera.setTarget(vec3.fromValues(
+          this.position.x,
+          this.position.y - 5,
+          this.position.z + 5
+        ));
+
+        this.bucketFillLevel += dt;
+        if (this.bucketFillLevel >= 1.4) {
+          this.bucketFillLevel = 1.4;
+          this.bucketFilled = true;
+          this.state = 'filled';
+          this.scene.camera.setPosition(vec3.fromValues(this.position.x, this.position.y + 40, this.position.z + 40));
+          this.scene.camera.setTarget(vec3.fromValues(this.position.x, this.position.y, this.position.z));
+        }
+        break;
+
       case 'filled':
         break;
-  
+
       case 'rising':
         this.velocity = { x: 0, y: 8, z: 0 };
         this.position.y += this.velocity.y * dt;
@@ -298,26 +302,26 @@ export class MyHelicopter extends CGFobject {
           this.state = 'flying';
         }
         break;
-  
-        case 'landing':
-          if (this.velocity.y === 0) {
-            this.velocity = { x: 0, y: -8, z: 0 };
-          }
-        
-          this.position.y += this.velocity.y * dt;
-        
-          if (this.position.y <= 26.25) {
-            this.position.y = 26.25;
-            this.velocity = { x: 0, y: 0, z: 0 };
-            this.state = 'landed';
-            this.bucketRelease = false;
-            this.orientation = 0;
-          }
-          break;
-        
-  
+
+      case 'landing':
+        if (this.velocity.y === 0) {
+          this.velocity = { x: 0, y: -8, z: 0 };
+        }
+
+        this.position.y += this.velocity.y * dt;
+
+        if (this.position.y <= 26.25) {
+          this.position.y = 26.25;
+          this.velocity = { x: 0, y: 0, z: 0 };
+          this.state = 'landed';
+          this.bucketRelease = false;
+          this.orientation = 0;
+        }
+        break;
+
+
       case 'flying':
-        if(this.velocity.x === 0 && this.velocity.z  === 0){
+        if (this.velocity.x === 0 && this.velocity.z === 0) {
           this.tilt = 0;
         }
         // movimentação ativa permitida
@@ -325,46 +329,50 @@ export class MyHelicopter extends CGFobject {
         this.position.z += this.velocity.z * dt;
         this.bucketRelease = true;
         break;
-  
+
       case 'landed':
       case 'idle':
         // parado no heliporto
         break;
       case 'returning':
-          const targetPosition = { x: -100, y: this.cruiseAltitude, z: -106 };
-  
-          const dx = targetPosition.x - this.position.x;
-          const dz = targetPosition.z - this.position.z;
-          const distance = Math.sqrt(dx * dx + dz * dz);
-  
-          // Rotate to face direction of movement
-          if (distance > 0.5) {
-            this.orientation = Math.atan2(dx, dz); // rotate to face target
-            const moveSpeed = 15; // constant speed for return
-            const vx = (dx / distance) * moveSpeed;
-            const vz = (dz / distance) * moveSpeed;
-  
-            this.velocity = { x: vx, y: 0, z: vz };
-            this.position.x += vx * dt;
-            this.position.z += vz * dt;
-          } else {
-            // Reached helicenter
-            this.position.x = targetPosition.x;
-            this.position.z = targetPosition.z;
-            this.velocity = { x: 0, y: 0, z: 0 };
-            this.state = 'landing'; // descend when arrived
-          }
-          break;
+        const targetPosition = { x: -100, y: this.cruiseAltitude, z: -106 };
+
+        const dx = targetPosition.x - this.position.x;
+        const dz = targetPosition.z - this.position.z;
+        const distance = Math.sqrt(dx * dx + dz * dz);
+
+        // Rotate to face direction of movement
+        if (distance > 0.5) {
+          this.orientation = Math.atan2(dx, dz); // rotate to face target
+          const moveSpeed = 15; // constant speed for return
+          const vx = (dx / distance) * moveSpeed;
+          const vz = (dz / distance) * moveSpeed;
+
+          this.velocity = { x: vx, y: 0, z: vz };
+          this.position.x += vx * dt;
+          this.position.z += vz * dt;
+        } else {
+          // Reached helicenter
+          this.position.x = targetPosition.x;
+          this.position.z = targetPosition.z;
+          this.velocity = { x: 0, y: 0, z: 0 };
+          this.state = 'landing'; // descend when arrived
+        }
+        break;
     }
-  
-    if(this.state !== 'idle'){
+
+    if (this.state !== 'idle') {
       this.topRotorAngle += deltaTime * 0.01;
       this.sideRotorAngle += deltaTime * 0.05;
     }
   }
-  
 
 
+
+  /**
+    * Turns the helicopter by a given angle.
+    * @param {number} v - The angle in radians to turn the helicopter.
+   */
   turn(v) {
     this.orientation += v;
     const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.z ** 2);
@@ -372,6 +380,14 @@ export class MyHelicopter extends CGFobject {
     this.velocity.z = speed * Math.cos(this.orientation);
   }
 
+  /**
+   * Accelerates the helicopter by a given speed.
+   * If the helicopter is in the 'flying' state, it increases the speed
+   * and updates the velocity based on the current orientation.
+   * The speed is clamped between 0 and the maximum speed.
+   * The tilt is adjusted based on the current speed.
+   * @param {number} v - The speed to accelerate by.
+   */
   accelerate(v) {
     if (this.state === 'flying') {
       this.speed += v;
@@ -387,6 +403,15 @@ export class MyHelicopter extends CGFobject {
       }
     }
   }
+
+  /**
+   * Decelerates the helicopter by a given speed.
+   * If the helicopter is in the 'flying' state, it decreases the speed
+   * and updates the velocity based on the current orientation.
+   * The speed is clamped between 0 and the maximum speed.
+   * The tilt is adjusted based on the current speed.
+   * @param {number} v - The speed to decelerate by.
+   */
   decelerate(v) {
     if (this.state === 'flying') {
       this.speed -= v;
@@ -403,7 +428,10 @@ export class MyHelicopter extends CGFobject {
     }
   }
 
-
+  /**
+   * Resets the helicopter's position, velocity, orientation, speed, bucket state, and state.
+   * This method is typically called when the helicopter needs to be reset to its initial state.
+   */
   reset() {
     this.position = { x: -100, y: 26.25, z: -106 };
     this.velocity = { x: 0, y: 0, z: 0 };
@@ -415,12 +443,20 @@ export class MyHelicopter extends CGFobject {
     this.state = 'landed';
   }
 
+  /**
+   * Ascends the helicopter from the 'landed' state to the 'taking_off' state.
+   * This method is typically called when the helicopter needs to take off.
+   */
   ascend() {
     if (this.state === 'landed') {
       this.state = 'taking_off';
     }
   }
 
+  /**
+   * Descends the helicopter from the 'flying' state to the 'descending' state.
+   * This method is typically called when the helicopter needs to descend.
+   */
   descend() {
     if (this.state === 'flying') {
       this.speed = 0;
@@ -430,6 +466,13 @@ export class MyHelicopter extends CGFobject {
     }
   }
 
+  /**
+   * Eliminates nearby fires within a specified radius from the helicopter's position.
+   * This method filters out fires that are within the specified radius from the helicopter's position.
+   * It logs the initial and final fire counts, as well as the positions of the fires before and after elimination.
+   * @param {number} radius - The radius within which to eliminate fires.
+   * @returns {boolean} - Returns true if any fires were eliminated, false otherwise.
+   */
   eliminateNearbyFires(radius) {
     console.log("Eliminating nearby fires...");
     console.log(`Current position: x=${this.position.x}, z=${this.position.z}`);
@@ -455,7 +498,13 @@ export class MyHelicopter extends CGFobject {
   }
 
 
-  handleKeyPress(key) {  
+  /**
+   * Handles key presses for helicopter controls.
+   * This method processes key inputs to control the helicopter's state and actions.
+   *  
+   * @param {string} key - The key that was pressed.
+   * */
+  handleKeyPress(key) {
     switch (key) {
       case 'L':
         if (this.isOverLake && this.speed === 0 && !this.bucketFilled) {
@@ -475,12 +524,12 @@ export class MyHelicopter extends CGFobject {
           this.state = 'taking_off';
         }
         break;
-  
+
       case 'O':
         if (this.bucketFilled && this.state === 'flying') {
           console.log("EXTINGUISH");
-          const radius = 30; 
-          if(this.eliminateNearbyFires(radius)){
+          const radius = 30;
+          if (this.eliminateNearbyFires(radius)) {
             console.log("RESETING");
             this.bucketFilled = false;
             this.bucketFillLevel = 0;
@@ -490,5 +539,5 @@ export class MyHelicopter extends CGFobject {
         break;
     }
   }
-  
+
 }

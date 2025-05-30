@@ -13,6 +13,10 @@ export class MyQuad extends CGFobject {
 			this.updateTexCoords(coords);
 	}
 	
+	/**
+	 * Initializes the buffers for the quad.
+	 * Creates vertices, normals, texture coordinates, and indices for the quad.
+	 */
 	initBuffers() {
 		this.vertices = [
 			-0.5, -0.5, 0,	//0
