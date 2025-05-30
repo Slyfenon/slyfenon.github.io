@@ -216,7 +216,6 @@ export class MyScene extends CGFscene {
     this.lake.update(deltaTime);
   
     this.timeFactor = (t / 1000) % 1000;
-    this.fire.shader.setUniformsValues({ timeFactor: this.timeFactor });
 
     if (this.helicopter.state === "rising" || this.helicopter.state === "landing") {
       this.building.displayYellowSpheres(this.timeFactor); // Passa o tempo

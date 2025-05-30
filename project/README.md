@@ -1,13 +1,11 @@
 # CG 2024/2025
 
-# TODO LIST
-
-- Parametrizar Panorama
-- Fix helicopter velocity
-- Extinguish Fire
-
-
 ## Group T02G03
+
+| Group Member | Contribution |
+| --- | --- |
+| Paulo Coutinho  | 50% |
+| Nuno Saavedra Machado | 50% |
 
 ## Project Notes
 
@@ -28,6 +26,11 @@ Na implementacao da classe **MyForest**, foi utilizado um desvio aleatório (off
 
 ![Screenshot 3](screenshots/project-t02g03-3.png)
 
+Adicionalmente, por uma questão de criatividade, introduzimos variações subtis na textura e na cor das árvores consoante a estação do ano selecionada. No caso do inverno, apenas o tronco permanece visível.
+![Screenshoo 7](screenshots/project-t02g03-7.png)
+
+![Screenshoo 8](screenshots/project-t02g03-8.png)
+
 ### Part 4 - Helicopter
 
 #### Helicopter Modeling
@@ -45,3 +48,19 @@ Tal como nas árvores, o fogo pode ou não usar textura. Quando não utiliza tex
 O fogo é gerado na classe **MyForest**, no ciclo de criação da matriz da floresta, surgindo aleatoriamente entre grupos de quatro árvores.
 
 ![Screenshot 6](screenshots/project-t02g03-6.png)
+
+### Part 6 - Shaders e animação
+
+Quando o helicóptero sobe ou desce, ocorre uma troca de textura, exibindo intermitentemente o texto correspondente "UP" ou "DOWN". Adicionalmente, são ativadas luzes com propriedades emissivas para reforçar visualmente o movimento vertical da aeronave.
+
+![Screenshot 9](screenshots/project-t02g03-9.png)
+
+Exemplo dos dois tipos de labaredas.
+![Screenshot 10](screenshots/project-t02g03-10.png)
+
+### Part 7 - Desenvolvimentos adicionais
+Um *height map* foi aplicado tanto ao terreno como à água, com o objetivo de simular irregularidades naturais e proporcionar um maior realismo visual ao ambiente. No caso do terreno, o *height map* permite criar relevos, como colinas e depressões, tornando a superfície menos plana e mais próxima do que se observa na natureza. Para a água, a utilização do *height map* resulta numa superfície ondulada, simulando o movimento das ondas e conferindo dinamismo ao cenário.
+
+![Screenshot 11](screenshots/project-t02g03-11.png)
+
+
