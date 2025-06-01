@@ -1,5 +1,5 @@
 import { CGFappearance, CGFobject } from '../lib/CGF.js';
-import { MyUnitCube } from '../tp3/MyUnitCube.js';
+import { MyUnitCube } from './MyUnitCube.js';
 import { MyBucket } from './MyBucket.js';
 import { MyCircle } from './MyCircle.js';
 import { MyCone } from './MyCone.js';
