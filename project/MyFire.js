@@ -138,22 +138,9 @@ export class MyFire extends CGFobject {
   /**
    * Displays the fire effect.
    */
-  display() {
-
-    if (this.useTexture) {
-      this.scene.setActiveShader(this.shader);
-      this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
-      this.appearance.texture.bind(0);
-      this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
-      this.filterTexture.bind(1);
-
-      this.shader.setUniformsValues({
-        uSampler: 0,
-        timeFactor: this.scene.timeFactor || 0
-      });
-    } else {
-      this.scene.setActiveShader(this.scene.defaultShader);
-    }
+  display(applyShader = false) {
+    if (this.useTexture && !applyShader) return;
+    if (!this.useTexture && applyShader) return;
 
     for (let i = 0; i < this.positions.length; i++) {
       const { x, z, height } = this.positions[i];
@@ -172,7 +159,22 @@ export class MyFire extends CGFobject {
       this.sharedPyramid.display();
       this.scene.popMatrix();
     }
+  }
 
+  enableShader() {
+      this.scene.setActiveShader(this.shader);
+      this.scene.gl.activeTexture(this.scene.gl.TEXTURE0);
+      this.appearance.texture.bind(0);
+      this.scene.gl.activeTexture(this.scene.gl.TEXTURE1);
+      this.filterTexture.bind(1);
+
+      this.shader.setUniformsValues({
+        uSampler: 0,
+        timeFactor: this.scene.timeFactor || 0
+      });
+    } 
+
+  disableShader() {
     this.scene.setActiveShader(this.scene.defaultShader);
   }
 

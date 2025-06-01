@@ -66,11 +66,23 @@ export class MyForest extends CGFobject {
                 this.scene.popMatrix();
             }
         }
+        const texturedFires = this.fires.filter(f => f.fire.useTexture);
+        const untexturedFires = this.fires.filter(f => !f.fire.useTexture);
+        if (texturedFires.length > 0) {
+            texturedFires[0].fire.enableShader();
+            for (const { fire, x, z } of texturedFires) {
+                this.scene.pushMatrix();
+                this.scene.translate(x, 0, z);
+                fire.display(true);
+                this.scene.popMatrix();
+            }
+            texturedFires[0].fire.disableShader();
+        }
 
-        for (const fireData of this.fires) {
+        for (const { fire, x, z } of untexturedFires) {
             this.scene.pushMatrix();
-            this.scene.translate(fireData.x, 0, fireData.z);
-            fireData.fire.display();
+            this.scene.translate(x, 0, z);
+            fire.display(false);
             this.scene.popMatrix();
         }
     }
